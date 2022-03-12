@@ -3,6 +3,8 @@ from Character import Character
 from sys import exit
 
 
+
+
 # from Commands import darstellreihenfolge
 pygame.init()
 
@@ -154,9 +156,9 @@ while True:
 
     ################### ERSTE MENÜ UND INPUT PHASE ##################################################################
 
-    # screen.blit(darstellreihenfolge(), (20, 40))
+    #screen.blit(Commands.darstellreihenfolge(), (20, 40))
     #if Textanzeige == True:
-        #screen.blit(Text[i], (20, 40))
+   # screen.blit(Text[i], (20, 40))
 
     #if i == 3:
        # Textanzeige = False
