@@ -29,14 +29,25 @@ T4 = "We will know it soon!"
 
 Text = [T1,T2,T2]
 
+def darstellreihenfolge(Text):
+    global i
 
-def darstellreihenfolge (Text):
+    if Player_Input_SPACE == True:
+        # Text[i] = Text[i+1]
+        i += 1
+    if Player_Input_ALT == True:
+        # Text[i] = Text [i-1]
+        i -= 1
+    if i < 0:
+        i = 0
+    return i
+"""def darstellreihenfolge (Text):
     if Player_Input_SPACE == True:
         Text [i] = Text[i+1]
     if Player_Input_ALT == True:
         Text [i] = Text [i-1]
     if i < 0:
         i = 0
-    return Text[i]
+    return Text[i]"""
 
-screen.blit(Text[i], (20, 40))
+#screen.blit(Text[i], (20, 40))

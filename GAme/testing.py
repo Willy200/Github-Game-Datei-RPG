@@ -13,6 +13,8 @@ font = pygame.font.Font("Fonts/Pixeltype.ttf", 30)
 ################################### Variablen definiert, damit Global ########################################################################
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
@@ -29,22 +31,21 @@ Player_Input_ALT = False
 Stage1 = True
 Stage2 = False
 Textanzeige = True
-
 Background = pygame.Surface((1000, 600))
 # surface = pygame.Surface((100,200))##########################################################
-
 surface2 = pygame.Surface((100, 200))
 surface3 = pygame.Surface((200, 50))
 surface3.fill("Red")
 surface2.fill("Blue")
 # surface.fill("Red")############################################################################
 Background.fill("White")
-
 sky = pygame.image.load("Graphics/Sky.png")
 ground = pygame.image.load("Graphics/ground.png")
 ########text = font.render("Player1",False,"Black")
 text2 = font.render("Enemy", False, "Black")
 Attack_text = font.render("ATTACK", False, "White")
+Attack_Add = font.render("+", False, "White")
+Attack_Sub = font.render("-", False, "White")
 Defense_text = font.render("Defense", False, "White")
 Special_text = font.render("Special", False, "White")
 Item_text = font.render("Item", False, "White")
@@ -54,7 +55,6 @@ Shield_text = font.render("Shield", False, "White")
 Attck_Buff_text = font.render("Attack Buff", False, "White")
 Defense_Buff_text = font.render("Defense Buff", False, "White")
 Potion_Text = font.render("Potion", False, "White")
-
 ################################################################### Text darstellen ##################################################
 i = 0
 T1 = font.render("Welcome to the new Turnamento", False, "Black")
@@ -62,9 +62,7 @@ T2 = font.render("These formidble Worriors will be your Opponent", False, "Black
 T3 = font.render("Can you beat them all ? Will you be the new Champion? ", False, "Black")
 T4 = font.render(" ", False, "Black")
 Text = [T1, T2, T3, T4]
-
 # screen.blit(Text[i], (20, 40))
-
 ##################################################################### main Game loop ###################################################################################
 while True:
 
@@ -182,11 +180,15 @@ while True:
             Item_Untermenü = False
 
         pygame.draw.rect(screen, BLACK, [10, 20, 200, 100], 100)  # Quadrat für Attack
+        pygame.draw.circle(screen, GREEN, (85, 33), 10, 10)  # für +
+        pygame.draw.circle(screen, RED, (100, 33), 10, 10)  # für -
         pygame.draw.rect(screen, BLACK, [10, 130, 200, 100], 100)  # Quadrat für Defend
         pygame.draw.rect(screen, BLACK, [10, 240, 200, 100], 100)  # Quadrat für Special
         pygame.draw.rect(screen, BLACK, [10, 350, 200, 100], 100)  # Quadrat für Item
         # Text darstellung
         screen.blit(Attack_text, (10, 20))
+        screen.blit(Attack_Add, (80, 20))
+        screen.blit(Attack_Sub, (95, 25))
         screen.blit(Defense_text, (10, 130))
         screen.blit(Special_text, (10, 240))
         screen.blit(Item_text, (10, 350))
@@ -250,7 +252,6 @@ while True:
         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
         screen.blit(Item_text, (20, 20))
         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-
     print(Stage1)
     # print(Player_Input_DOWN)
     # print(Player_Input_UP)
@@ -258,7 +259,4 @@ while True:
     # print(Player_Input_ALT)
     # print (B)
     # print (darstellreihenfolge())
-
     Frames.tick(60)
-
-Willy = Character()

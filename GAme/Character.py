@@ -1,18 +1,16 @@
-
-
 class Character:
     Player_Skill_Points = 20 #Anfangswert den man auszugeben hat
     def __init__(self):
         pass # lass es so einfach
 
-    def Stats(self, health, attack, defense, special, name):
+    def Stats(self, health, attack, defense, special, initiative, name):
         self.health = health
         self.attack = attack
         self.defense = defense
         self.special = special
+        self.init = initiative
         self.name = name
         self.level = 0
-        self.experience = 0
 
     def Battle_Stats(self): # die Brauchen wir, weil während des Kampfs sich die Statistiken ändern werden z.B. Health und wir wollen nicht, dass es permament reduziert bleibt
         self.Battle_Health_Max = self.health
@@ -23,7 +21,8 @@ class Character:
         self.Battle_Defense_Actual = self.defense
         self.Battle_Special_Max = self.special
         self.Battle_Special_Actual = self.special
-
+        self.Battle_Initiative_Actual = self.init
+        self.Battlle_Initiative_Max = self.init
     def setHealth(self, amount):
         self.Battle_Health_Actual = self.Battle_Health_Actual + amount
     def getHealth(self):
@@ -42,6 +41,12 @@ class Character:
             self.Battle_Special_Actual = self.Battle_Special_Max
     def getSpecial(self):
         return self.special
+    def RestoreStats(self):
+        self.Battle_Health_Actual = self.Battle_Health_Max
+        self.Battle_Attack_Actual = self.Battle_Attack_Max
+        self.Battle_Defense_Actual = self.Battle_Defense_Max
+        self.Battle_Special_Actual = self.Battle_Special_Max
+        self.Battle_Initiative_Actual = self.Battlle_Initiative_Max
     def Character_Darstellen(self):
         Surface = pygame.Surface((100,200))
         surface.fill("Red")
