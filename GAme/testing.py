@@ -5,6 +5,21 @@ from sys import exit
 
 pygame.init()
 
+class Buttons:
+    Up = False
+    Down = False
+    def __init__(self, screen, color, XPos, YPos, XLen, YLen, Willyszahl, Text, TextColor): #Man kann die vorbestimmte Farben wie RED = (255, 0, 0) sowohl bei rect als auch bei Text benutzen
+        pygame.draw.rect(screen, color, [XPos, YPos, XLen, YLen], Willyszahl)
+        Buttons_Text = font.render(Text, False, TextColor)
+        screen.blit(Buttons_Text, (XPos, YPos))
+
+    def check_if_used(self):
+        if event.key == pygame.K_UP:
+            Up = True
+        if event.key == pygame.K_DOWN:
+            Down = True
+
+
 screen = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("Spiel")
 Frames = pygame.time.Clock()
@@ -43,7 +58,7 @@ sky = pygame.image.load("Graphics/Sky.png")
 ground = pygame.image.load("Graphics/ground.png")
 ########text = font.render("Player1",False,"Black")
 text2 = font.render("Enemy", False, "Black")
-Attack_text = font.render("ATTACK", False, "White")
+Attack_text = font.render("ATTACK", False, RED)
 Attack_Add = font.render("+", False, "White")
 Attack_Sub = font.render("-", False, "White")
 Defense_text = font.render("Defense", False, "White")
@@ -72,9 +87,7 @@ while True:
             pygame.quit()
             exit()
 
-
-
-        elif event.type == pygame.KEYDOWN:  # Das alles hier guck ob eine Taste gedrückt wurde. Wenn sie gedrückt wird ist die entsprechende Input Variable auf TRUE gesetzt, sonst nicht. Alle anderen sind Fals.
+        elif event.type == pygame.KEYDOWN:  # Das alles hier guck ob eine Taste gedrückt wurde. Wenn sie gedrückt wird ist die entsprechende Input Variable auf TRUE gesetzt, sonst nicht. Alle anderen sind False.
             Key_pressed = True
 
             if event.key == pygame.K_RIGHT and Key_pressed == True:
@@ -179,12 +192,14 @@ while True:
         else:
             Item_Untermenü = False
 
-        pygame.draw.rect(screen, BLACK, [10, 20, 200, 100], 100)  # Quadrat für Attack
+        pygame.draw.rect(screen, BLACK, [10, 20, 200, 100])  # Quadrat für Attack
         pygame.draw.circle(screen, GREEN, (85, 33), 10, 10)  # für +
         pygame.draw.circle(screen, RED, (100, 33), 10, 10)  # für -
         pygame.draw.rect(screen, BLACK, [10, 130, 200, 100], 100)  # Quadrat für Defend
         pygame.draw.rect(screen, BLACK, [10, 240, 200, 100], 100)  # Quadrat für Special
         pygame.draw.rect(screen, BLACK, [10, 350, 200, 100], 100)  # Quadrat für Item
+
+        Start_Button = Buttons(screen, RED, 50, 50, 200, 200, 100, "Start", BLUE)
         # Text darstellung
         screen.blit(Attack_text, (10, 20))
         screen.blit(Attack_Add, (80, 20))

@@ -28,7 +28,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.testing">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Github-Game-Datei-RPG" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -73,8 +73,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.testing" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -104,21 +104,25 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1899" height="295" key="GridCell.Tab.0.bottom" timestamp="1647181917619">
+    <state width="1899" height="295" key="GridCell.Tab.0.bottom" timestamp="1647276405582">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1899" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647181917619" />
-    <state width="1899" height="295" key="GridCell.Tab.0.center" timestamp="1647181917619">
+    <state width="1899" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647276405582" />
+    <state width="1899" height="295" key="GridCell.Tab.0.center" timestamp="1647276405582">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1899" height="295" key="GridCell.Tab.0.center/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647181917619" />
-    <state width="1899" height="295" key="GridCell.Tab.0.left" timestamp="1647181917618">
+    <state width="1899" height="295" key="GridCell.Tab.0.center/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647276405582" />
+    <state width="1899" height="295" key="GridCell.Tab.0.left" timestamp="1647276405581">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1899" height="295" key="GridCell.Tab.0.left/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647181917618" />
-    <state width="1899" height="295" key="GridCell.Tab.0.right" timestamp="1647181917619">
+    <state width="1899" height="295" key="GridCell.Tab.0.left/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647276405581" />
+    <state width="1899" height="295" key="GridCell.Tab.0.right" timestamp="1647276405582">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1899" height="295" key="GridCell.Tab.0.right/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647181917619" />
+    <state width="1899" height="295" key="GridCell.Tab.0.right/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647276405582" />
+    <state x="656" y="365" key="com.intellij.ide.util.TipDialog" timestamp="1647274375840">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="656" y="365" key="com.intellij.ide.util.TipDialog/0.0.1920.1080/5.-1080.1920.1080@0.0.1920.1080" timestamp="1647274375840" />
   </component>
 </project>
