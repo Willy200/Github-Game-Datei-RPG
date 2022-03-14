@@ -2,7 +2,6 @@ import pygame
 from Character import Character
 #from Commands import darstellreihenfolge
 from sys import exit
-
 pygame.init()
 
 class Buttons:
@@ -12,13 +11,23 @@ class Buttons:
         pygame.draw.rect(screen, color, [XPos, YPos, XLen, YLen], Willyszahl)
         Buttons_Text = font.render(Text, False, TextColor)
         screen.blit(Buttons_Text, (XPos, YPos))
-
-    def check_if_used(self):
-        if event.key == pygame.K_UP:
-            Up = True
-        if event.key == pygame.K_DOWN:
-            Down = True
-
+def UP_DOWN():
+    global A
+    global Stage1
+    if event.type == pygame.KEYDOWN and Stage1 == True:
+        if event.key == pygame.K_UP and Key_pressed == True:
+            A -= 1
+            if A == 0:
+                A = 4
+        elif event.key == pygame.K_DOWN and Key_pressed == True:
+            A += 1
+            if A == 5:
+                A = 1
+    elif event.type == pygame.KEYDOWN and Stage1 == False:
+        if event.key == pygame.K_UP and Key_pressed == True:
+            A = 1
+        elif event.key == pygame.K_DOWN and Key_pressed == True:
+            A = 0
 
 screen = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("Spiel")
@@ -43,8 +52,9 @@ Player_Input_UP = False
 Key_pressed = False
 Player_Input_SPACE = False
 Player_Input_ALT = False
-Stage1 = True
+Stage1 = False
 Stage2 = False
+Main_Menu = True
 Textanzeige = True
 Background = pygame.Surface((1000, 600))
 # surface = pygame.Surface((100,200))##########################################################
@@ -89,6 +99,7 @@ while True:
 
         elif event.type == pygame.KEYDOWN:  # Das alles hier guck ob eine Taste gedrückt wurde. Wenn sie gedrückt wird ist die entsprechende Input Variable auf TRUE gesetzt, sonst nicht. Alle anderen sind False.
             Key_pressed = True
+            UP_DOWN()
 
             if event.key == pygame.K_RIGHT and Key_pressed == True:
                 Payer_Input_RIGHT = True
@@ -99,28 +110,7 @@ while True:
                 Player_Input_LEFT = True
             else:
                 Payer_Input_LEFT = False
-
-            if event.key == pygame.K_UP and Key_pressed == True:
-                Player_Input_UP = True
-                if Stage1 == True:
-                    A = A - 1
-                if Stage1 == True:
-                    B = B - 1
-            else:
-                Player_Input_UP = False
-
-            if event.key == pygame.K_DOWN and Key_pressed == True:
-                Player_Input_DOWN = True
-                if Stage1 == True:
-                    A = A + 1
-                if Stage2 == True:
-                    B = B + 1
-            else:
-                Payer_Input_DOWN = False
-
             if event.key == pygame.K_SPACE and Key_pressed == True:
-                #darstellreihenfolge(Text)
-
                 Player_Input_SPACE = True
                 Player_Input_ALT = False
             else:
@@ -132,11 +122,8 @@ while True:
             else:
                 Payer_Input_SPACE = False
     Key_pressed = False
-
     pygame.display.update()
-
     screen.blit(Background, (0, 0))
-
     # screen.blit(sky,(0,0))
     # screen.blit(ground,(0,350))
     # screen.blit(surface,(400,200))#############################################
@@ -159,63 +146,61 @@ while True:
 
     # for x in range(2):
     # i = darstellreihenfolge(Text)
-    # screen.blit(Text[i], (20, 40))
+    # screen.blit(Text[i], (20, 40)
 
-    if Stage1 == True :
+    if Stage1 == True: # Battle Menu
+        Attack_Button = Buttons(screen, BLACK, 10, 20, 200, 100, 100, "Attack", "White")
+        Defend_Button = Buttons(screen, BLACK, 10, 130, 200, 100, 100, "Defense", "White")
+        Special_Button = Buttons(screen, BLACK, 10, 240, 200, 100, 100, "Special", "White")
+        Items_Button = Buttons(screen, BLACK, 10, 350, 200, 100, 100, "Items", "White")
 
         if A > 4:
             A = 1
         if A < 1:
             A = 4
-
         if A == 1:
-            pygame.draw.rect(screen, RED, [5, 15, 210, 110], 2)
+
+            Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White")
             Attack_Untermenü = True
         else:
             Attack_Untermenü = False
-
         if A == 2:
-            pygame.draw.rect(screen, RED, [5, 125, 210, 110], 2)
+            Buttons(screen, RED, 5, 125, 210, 110, 2, " ", "White")
             Defende_Untermenü = True
         else:
             Defende_Untermenü = False
-
         if A == 3:
-            pygame.draw.rect(screen, RED, [5, 235, 210, 110], 2)
+            Buttons(screen, RED, 5, 235, 210, 110, 2, " ", "White")
             Special_Untermenü = True
         else:
             Special_Untermenü = False
-
         if A == 4:
-            pygame.draw.rect(screen, RED, [5, 345, 210, 110], 2)
+            Buttons(screen, RED, 5, 345, 210, 110, 2, " ", "White")
             Item_Untermenü = True
         else:
             Item_Untermenü = False
 
-        pygame.draw.rect(screen, BLACK, [10, 20, 200, 100])  # Quadrat für Attack
-        pygame.draw.circle(screen, GREEN, (85, 33), 10, 10)  # für +
-        pygame.draw.circle(screen, RED, (100, 33), 10, 10)  # für -
-        pygame.draw.rect(screen, BLACK, [10, 130, 200, 100], 100)  # Quadrat für Defend
-        pygame.draw.rect(screen, BLACK, [10, 240, 200, 100], 100)  # Quadrat für Special
-        pygame.draw.rect(screen, BLACK, [10, 350, 200, 100], 100)  # Quadrat für Item
 
-        Start_Button = Buttons(screen, RED, 50, 50, 200, 200, 100, "Start", BLUE)
-        # Text darstellung
-        screen.blit(Attack_text, (10, 20))
-        screen.blit(Attack_Add, (80, 20))
-        screen.blit(Attack_Sub, (95, 25))
-        screen.blit(Defense_text, (10, 130))
-        screen.blit(Special_text, (10, 240))
-        screen.blit(Item_text, (10, 350))
+
+
 
         Player_Input_ALT = False  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+    elif Main_Menu == True:
+        Start_Button = Buttons(screen, BLACK, 400, 200, 150, 75, 100, "Start", "White")
+        Exit_Button = Buttons(screen, BLACK, 400, 300, 150, 75, 100, "Quit", "White")
+        if A == 1:
+            Buttons(screen, RED, 395, 195, 160, 85, 2, " ", "White")
+        elif A == 1 and Player_Input_SPACE == True:
+            Main_Menu = False
+            Stage1 = 1
+        else:
+            Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White")
+
 
     if Player_Input_SPACE == True :
         # if A == 1 or A == 2:
-
         Stage1 = False
         Stage2 = True
-
         # else:                                        # vieleicht später noch wichtig
         # Player_Input_SPACE = False
     if Player_Input_ALT == True:
@@ -223,7 +208,6 @@ while True:
         Stage2 = False
         A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
         B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-
     ########################################### Untermenüs ###############################################################
 
     if Stage2 == True and Attack_Untermenü == True:
@@ -267,11 +251,6 @@ while True:
         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
         screen.blit(Item_text, (20, 20))
         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-    print(Stage1)
-    # print(Player_Input_DOWN)
-    # print(Player_Input_UP)
-    # print (Key_pressed)
-    # print(Player_Input_ALT)
-    # print (B)
-    # print (darstellreihenfolge())
+    print(A)
+    print(Player_Input_SPACE)
     Frames.tick(60)

@@ -86,5 +86,3 @@ class Item:
 #Magic_Wand = Item()
 #Magic_Wand.ItemDescritpion("Magic Wand", "It is a magic wand, it increases the special damage")
 #Magic_Wand.ItemAttributes(1, 1, 1.2, 1)
-
-

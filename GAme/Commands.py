@@ -49,5 +49,4 @@ def darstellreihenfolge(Text):
     if i < 0:
         i = 0
     return Text[i]"""
-
 #screen.blit(Text[i], (20, 40))
