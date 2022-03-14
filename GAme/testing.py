@@ -159,7 +159,6 @@ while True:
         if A < 1:
             A = 4
         if A == 1:
-
             Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White")
             Attack_Untermenü = True
         else:
@@ -180,34 +179,32 @@ while True:
         else:
             Item_Untermenü = False
 
-
-
-
-
         Player_Input_ALT = False  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-    elif Main_Menu == True:
+
+    if Main_Menu == True:
         Start_Button = Buttons(screen, BLACK, 400, 200, 150, 75, 100, "Start", "White")
         Exit_Button = Buttons(screen, BLACK, 400, 300, 150, 75, 100, "Quit", "White")
         if A == 1:
             Buttons(screen, RED, 395, 195, 160, 85, 2, " ", "White")
-        elif A == 1 and Player_Input_SPACE == True:
+        if A == 1 and Player_Input_SPACE == True:
             Main_Menu = False
-            Stage1 = 1
-        else:
+            Stage1 = True
+        if A == 0:
             Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White")
+        if A == 0 and Player_Input_SPACE == True:
+            pygame.quit()
 
-
-    if Player_Input_SPACE == True :
+   # if Player_Input_SPACE == True :
         # if A == 1 or A == 2:
-        Stage1 = False
-        Stage2 = True
+    #    Stage1 = False
+     #   Stage2 = True
         # else:                                        # vieleicht später noch wichtig
         # Player_Input_SPACE = False
-    if Player_Input_ALT == True:
-        Stage1 = True
-        Stage2 = False
-        A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-        B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+   # if Player_Input_ALT == True:
+    #    Stage1 = True
+     #   Stage2 = False
+      #  A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+       # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
     ########################################### Untermenüs ###############################################################
 
     if Stage2 == True and Attack_Untermenü == True:
@@ -252,5 +249,5 @@ while True:
         screen.blit(Item_text, (20, 20))
         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
     print(A)
-    print(Player_Input_SPACE)
+    print(Player_Input_SPACE, Stage1, Main_Menu)
     Frames.tick(60)
