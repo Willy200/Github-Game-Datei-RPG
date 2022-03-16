@@ -218,15 +218,31 @@ while True:
                     Selection = Buttons(screen, RED, 200 + (50 * l), 100 + (50 * y), 30, 30, 2, "", "White", 0, 0)
 
         for y in range(6):
+            #Buttons(screen, "Black", 305, 105 + (y * 50), 20, 20, 0, Stats_Creation[y], "White", 210, 105 + (x * 50)) gibt ein Error, weiß nicht warum
             if Player_Input_SPACE == True and A == y+1 and B == 1:
-                Stats_Creation[A-1] += 1
+                Stats_Creation[A-1] += 1 # hier steigt es
                 Stat_Points -= 1
                 Player_Input_SPACE = False
 
-            if Player_Input_SPACE == True and A == y + 1 and B == 2:
-                Stats_Creation[A - 1] -= 1
+            if Stats_Creation[A - 1] == 0: # für den fall eine Statistik wird kleiner 1
                 Stat_Points += 1
+                Stats_Creation[A - 1] = 1
+
+            if Stat_Points > 20:
+                Stat_Points = 20
+
+            if Player_Input_SPACE == True and A == y + 1 and B == 2:
+                Stats_Creation[A - 1] -= 1 # hier sinkt es
                 Player_Input_SPACE = False
+
+            if Stats_Creation[A - 1] > 10: # für den fall eine Statistik wird größer 10
+                Stat_Points += 1
+                Stats_Creation[A - 1] = 10
+
+            if Stat_Points < 0:
+                Stat_Points = 0
+
+            #if Stats_Points == 0: hier wird character creation process abgeschlossen
 
 
     if Stage1 == True:  # Battle Menu
@@ -316,5 +332,5 @@ while True:
         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
         screen.blit(Item_text, (20, 20))
         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-    print(Stats_Creation[0],Stats_Creation[1],Stats_Creation[2],Stats_Creation[3],Stats_Creation[4])
+    print(Stats_Creation, Stat_Points)
     Frames.tick(60)
