@@ -10,7 +10,6 @@ class Character:
         self.special = special
         self.init = initiative
         self.name = name
-        self.level = 0
 
     def Battle_Stats(self): # die Brauchen wir, weil während des Kampfs sich die Statistiken ändern werden z.B. Health und wir wollen nicht, dass es permament reduziert bleibt
         self.Battle_Health_Max = self.health

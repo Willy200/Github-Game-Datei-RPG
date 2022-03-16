@@ -42,7 +42,7 @@ def UP_DOWN():
     elif event.type == pygame.KEYDOWN and Player_Creation == True:
         if event.key == pygame.K_DOWN and Key_pressed == True:
             A += 1
-            if A == 5:
+            if A == 6:
                 A = 1
 
         if event.key == pygame.K_UP and Key_pressed == True:
@@ -72,7 +72,13 @@ BLUE = (0, 0, 255)
 
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
-
+Health = 1
+Attack = 1
+Defense = 1
+Initiative = 1
+Special = 1
+Stat_Points = 20
+Stats_Creation = [1, Attack, Defense, Initiative, Special]
 Player_Creation = False
 Attack_Untermenü = False
 Defende_Untermenü = False
@@ -188,6 +194,8 @@ while True:
             Main_Menu = False
             Player_Creation = True
             A = 1
+            Player_Input_SPACE = False
+
         if A == 0:
             Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White", 395, 295)
         if A == 0 and Player_Input_SPACE == True:
@@ -199,12 +207,26 @@ while True:
         Def_Crea = Buttons(screen, BLACK, 90, 200, 100, 50, 50, "Defense", "White", 95, 205)
         Init_Crea = Buttons(screen, BLACK, 90, 250, 100, 50, 50, "Initiative", "White", 95, 255)
         Spe_Crea = Buttons(screen, BLACK, 90, 300, 100, 50, 50, "Special", "White", 95, 305)
-        Selection = Buttons(screen, RED, 200, 100, 30, 30, 2, "", "White", 200, 100)
 
-        for x in range (5):
-            Buttons(screen, "Green", 205, 105 + (x*50), 20, 20, 0, "+", "White", 210, 105+ (x*50))
-            Buttons(screen, "Red", 255, 105 + (x*50), 20, 20, 0, "-", "White", 260, 105+ (x*50))
-        if A == 1 and B == 1:
+        for x in range(5):
+            Buttons(screen, "Green", 205, 105 + (x * 50), 20, 20, 0, "+", "White", 210, 105 + (x * 50))
+            Buttons(screen, "Red", 255, 105 + (x * 50), 20, 20, 0, "-", "White", 260, 105 + (x * 50))
+
+        for y in range(6):
+            for l in range(2):
+                if A == y + 1 and B == l + 1:
+                    Selection = Buttons(screen, RED, 200 + (50 * l), 100 + (50 * y), 30, 30, 2, "", "White", 0, 0)
+
+        for y in range(6):
+            if Player_Input_SPACE == True and A == y+1 and B == 1:
+                Stats_Creation[A-1] += 1
+                Stat_Points -= 1
+                Player_Input_SPACE = False
+
+            if Player_Input_SPACE == True and A == y + 1 and B == 2:
+                Stats_Creation[A - 1] -= 1
+                Stat_Points += 1
+                Player_Input_SPACE = False
 
 
     if Stage1 == True:  # Battle Menu
@@ -294,6 +316,5 @@ while True:
         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
         screen.blit(Item_text, (20, 20))
         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-    print(A)
-    print(Player_Input_SPACE, Stage1, Main_Menu)
+    print(Stats_Creation[0],Stats_Creation[1],Stats_Creation[2],Stats_Creation[3],Stats_Creation[4])
     Frames.tick(60)
