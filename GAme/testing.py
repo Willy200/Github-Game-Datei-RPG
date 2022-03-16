@@ -1,33 +1,63 @@
 import pygame
 from Character import Character
-#from Commands import darstellreihenfolge
+# from Commands import darstellreihenfolge
 from sys import exit
+
 pygame.init()
 
+
 class Buttons:
-    Up = False
-    Down = False
-    def __init__(self, screen, color, XPos, YPos, XLen, YLen, Willyszahl, Text, TextColor): #Man kann die vorbestimmte Farben wie RED = (255, 0, 0) sowohl bei rect als auch bei Text benutzen
+    def __init__(self, screen, color, XPos, YPos, XLen, YLen, Willyszahl, Text, TextColor, XPos_Text,
+                 YPos_Text):  # Man kann die vorbestimmte Farben wie RED = (255, 0, 0) sowohl bei rect als auch bei Text benutzen
         pygame.draw.rect(screen, color, [XPos, YPos, XLen, YLen], Willyszahl)
         Buttons_Text = font.render(Text, False, TextColor)
-        screen.blit(Buttons_Text, (XPos, YPos))
+        screen.blit(Buttons_Text, (XPos_Text, YPos_Text))
+
+
 def UP_DOWN():
     global A
     global Stage1
+    global Main_Menu
+    global Player_Creation
+    global B
+
     if event.type == pygame.KEYDOWN and Stage1 == True:
         if event.key == pygame.K_UP and Key_pressed == True:
             A -= 1
             if A == 0:
                 A = 4
+
         elif event.key == pygame.K_DOWN and Key_pressed == True:
             A += 1
             if A == 5:
                 A = 1
-    elif event.type == pygame.KEYDOWN and Stage1 == False:
+
+    elif event.type == pygame.KEYDOWN and Main_Menu == True:
         if event.key == pygame.K_UP and Key_pressed == True:
             A = 1
+
         elif event.key == pygame.K_DOWN and Key_pressed == True:
             A = 0
+
+    elif event.type == pygame.KEYDOWN and Player_Creation == True:
+        if event.key == pygame.K_DOWN and Key_pressed == True:
+            A += 1
+            if A == 5:
+                A = 1
+
+        if event.key == pygame.K_UP and Key_pressed == True:
+            A -= 1
+            if A == 0:
+                A = 1
+        if event.key == pygame.K_LEFT and Key_pressed == True:
+            B -= 1
+            if B == 0:
+                B = 1
+        if event.key == pygame.K_RIGHT and Key_pressed == True:
+            B += 1
+            if B == 3:
+                B = 2
+
 
 screen = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("Spiel")
@@ -43,6 +73,7 @@ BLUE = (0, 0, 255)
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
 
+Player_Creation = False
 Attack_Untermenü = False
 Defende_Untermenü = False
 Special_Untermenü = False
@@ -61,13 +92,13 @@ Background = pygame.Surface((1000, 600))
 surface2 = pygame.Surface((100, 200))
 surface3 = pygame.Surface((200, 50))
 surface3.fill("Red")
-surface2.fill("Blue")
+# surface2.fill("Blue")
 # surface.fill("Red")############################################################################
 Background.fill("White")
 sky = pygame.image.load("Graphics/Sky.png")
 ground = pygame.image.load("Graphics/ground.png")
 ########text = font.render("Player1",False,"Black")
-text2 = font.render("Enemy", False, "Black")
+# text2 = font.render("Enemy", False, "Black")
 Attack_text = font.render("ATTACK", False, RED)
 Attack_Add = font.render("+", False, "White")
 Attack_Sub = font.render("-", False, "White")
@@ -129,26 +160,54 @@ while True:
     # screen.blit(surface,(400,200))#############################################
     screen.blit(surface2, (700, 200))
     ####screen.blit(text,(400,180))
-    screen.blit(text2, (700, 180))
+    # screen.blit(text2, (700, 180))
     # screen.blit(surface3,(0,300))
     # screen.blit(Background,(0,0))
     # Zustand  A (Attack gedrückt)
 
     ################### ERSTE MENÜ UND INPUT PHASE ##################################################################
 
-    #screen.blit(Commands.darstellreihenfolge(), (20, 40))
-    #if Textanzeige == True:
-   # screen.blit(Text[i], (20, 40))
+    # screen.blit(Commands.darstellreihenfolge(), (20, 40))
+    # if Textanzeige == True:
+    # screen.blit(Text[i], (20, 40))
 
-    #if i == 3:
-       # Textanzeige = False
-       # Stage1 = True
+    # if i == 3:
+    # Textanzeige = False
+    # Stage1 = True
 
     # for x in range(2):
     # i = darstellreihenfolge(Text)
     # screen.blit(Text[i], (20, 40)
 
-    if Stage1 == True: # Battle Menu
+    if Main_Menu == True:
+        Start_Button = Buttons(screen, BLACK, 400, 200, 150, 75, 100, "Start", "White", 450, 220)
+        Exit_Button = Buttons(screen, BLACK, 400, 300, 150, 75, 100, "Quit", "White", 450, 320)
+        if A == 1:
+            Buttons(screen, RED, 395, 195, 160, 85, 2, " ", "White", 395, 195)
+        if A == 1 and Player_Input_SPACE == True:
+            Main_Menu = False
+            Player_Creation = True
+            A = 1
+        if A == 0:
+            Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White", 395, 295)
+        if A == 0 and Player_Input_SPACE == True:
+            pygame.quit()
+
+    if Player_Creation == True:
+        Hea_Crea = Buttons(screen, BLACK, 90, 100, 100, 50, 50, "Health", "White", 95, 105)
+        Att_Crea = Buttons(screen, BLACK, 90, 150, 100, 50, 50, "Attack", "White", 95, 155)
+        Def_Crea = Buttons(screen, BLACK, 90, 200, 100, 50, 50, "Defense", "White", 95, 205)
+        Init_Crea = Buttons(screen, BLACK, 90, 250, 100, 50, 50, "Initiative", "White", 95, 255)
+        Spe_Crea = Buttons(screen, BLACK, 90, 300, 100, 50, 50, "Special", "White", 95, 305)
+        Selection = Buttons(screen, RED, 200, 100, 30, 30, 2, "", "White", 200, 100)
+
+        for x in range (5):
+            Buttons(screen, "Green", 205, 105 + (x*50), 20, 20, 0, "+", "White", 210, 105+ (x*50))
+            Buttons(screen, "Red", 255, 105 + (x*50), 20, 20, 0, "-", "White", 260, 105+ (x*50))
+        if A == 1 and B == 1:
+
+
+    if Stage1 == True:  # Battle Menu
         Attack_Button = Buttons(screen, BLACK, 10, 20, 200, 100, 100, "Attack", "White")
         Defend_Button = Buttons(screen, BLACK, 10, 130, 200, 100, 100, "Defense", "White")
         Special_Button = Buttons(screen, BLACK, 10, 240, 200, 100, 100, "Special", "White")
@@ -181,30 +240,17 @@ while True:
 
         Player_Input_ALT = False  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
 
-    if Main_Menu == True:
-        Start_Button = Buttons(screen, BLACK, 400, 200, 150, 75, 100, "Start", "White")
-        Exit_Button = Buttons(screen, BLACK, 400, 300, 150, 75, 100, "Quit", "White")
-        if A == 1:
-            Buttons(screen, RED, 395, 195, 160, 85, 2, " ", "White")
-        if A == 1 and Player_Input_SPACE == True:
-            Main_Menu = False
-            Stage1 = True
-        if A == 0:
-            Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White")
-        if A == 0 and Player_Input_SPACE == True:
-            pygame.quit()
-
-   # if Player_Input_SPACE == True :
-        # if A == 1 or A == 2:
+    # if Player_Input_SPACE == True :
+    # if A == 1 or A == 2:
     #    Stage1 = False
-     #   Stage2 = True
-        # else:                                        # vieleicht später noch wichtig
-        # Player_Input_SPACE = False
-   # if Player_Input_ALT == True:
+    #   Stage2 = True
+    # else:                                        # vieleicht später noch wichtig
+    # Player_Input_SPACE = False
+    # if Player_Input_ALT == True:
     #    Stage1 = True
-     #   Stage2 = False
-      #  A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-       # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+    #   Stage2 = False
+    #  A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+    # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
     ########################################### Untermenüs ###############################################################
 
     if Stage2 == True and Attack_Untermenü == True:
