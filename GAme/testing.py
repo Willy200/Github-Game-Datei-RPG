@@ -72,13 +72,8 @@ BLUE = (0, 0, 255)
 
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
-Health = 1
-Attack = 1
-Defense = 1
-Initiative = 1
-Special = 1
 Stat_Points = 20
-Stats_Creation = [Health, Attack, Defense, Initiative, Special]
+Stats_Creation = [1, 1, 1, 1, 1]
 Player_Creation = False
 Attack_Untermenü = False
 Defende_Untermenü = False
@@ -185,7 +180,7 @@ while True:
     # i = darstellreihenfolge(Text)
     # screen.blit(Text[i], (20, 40)
 
-    if Main_Menu == True:
+    if Main_Menu:
         Start_Button = Buttons(screen, BLACK, 400, 200, 150, 75, 100, "Start", "White", 450, 220)
         Exit_Button = Buttons(screen, BLACK, 400, 300, 150, 75, 100, "Quit", "White", 450, 320)
         if A == 1:
@@ -201,7 +196,7 @@ while True:
         if A == 0 and Player_Input_SPACE == True:
             pygame.quit()
 
-    if Player_Creation == True:
+    if Player_Creation:
         Hea_Crea = Buttons(screen, BLACK, 90, 100, 100, 50, 50, "Health", "White", 95, 105)
         Att_Crea = Buttons(screen, BLACK, 90, 150, 100, 50, 50, "Attack", "White", 95, 155)
         Def_Crea = Buttons(screen, BLACK, 90, 200, 100, 50, 50, "Defense", "White", 95, 205)
@@ -217,65 +212,68 @@ while True:
                 if A == y + 1 and B == l + 1:
                     Selection = Buttons(screen, RED, 200 + (50 * l), 100 + (50 * y), 30, 30, 2, "", "White", 0, 0)
 
-            if Player_Input_SPACE == True and A == y+1 and B == 1:
-                Stats_Creation[A-1] += 1 # hier steigt es
+            if Player_Input_SPACE == True and A == y + 1 and B == 1:
+                Stats_Creation[A - 1] += 1  # hier steigt es
                 Stat_Points -= 1
                 Player_Input_SPACE = False
 
-            if Stats_Creation[A - 1] == 0: # für den fall eine Statistik wird kleiner 1
-                #Stat_Points += 1
+            if Stats_Creation[A - 1] == 0:  # für den fall eine Statistik wird kleiner 1
+                # Stat_Points += 1
                 Stats_Creation[A - 1] = 1
 
             if Stat_Points > 20:
                 Stat_Points = 20
 
             if Player_Input_SPACE == True and A == y + 1 and B == 2 and Stats_Creation[A - 1] > 1:
-                Stats_Creation[A - 1] -= 1 # hier sinkt es
+                Stats_Creation[A - 1] -= 1  # hier sinkt es
                 Stat_Points += 1
                 Player_Input_SPACE = False
 
-            #if Player_Input_SPACE == True and A == y + 1 and B == 2 and Stats_Creation[A - 1] == 1:
-             #   pass
-
-            if Stats_Creation[A - 1] > 10: # für den fall eine Statistik wird größer 10
+            if Stats_Creation[A - 1] > 10:  # für den fall eine Statistik wird größer 10
                 Stat_Points += 1
                 Stats_Creation[A - 1] = 10
 
             if Stat_Points < 0:
                 Stat_Points = 0
+
         for y in range(5):
             Buttons(screen, "Black", 305, 105 + (y * 50), 20, 20, 0, str(Stats_Creation[y]), "Blue", 312, 107 + (y * 50))
         Buttons(screen, "Black", 405, 105, 35, 20, 0, str(Stat_Points), "Blue", 412, 107)
-        #if Stats_Points == 0: hier wird character creation process abgeschlossen
 
+        if Stat_Points == 0:
+            Stage1 = True
+            Player_Creation = False
+            Player = Character()
+            Player.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4], "Dominik")
+            A = 1
 
-    if Stage1 == True:  # Battle Menu
-        Attack_Button = Buttons(screen, BLACK, 10, 20, 200, 100, 100, "Attack", "White")
-        Defend_Button = Buttons(screen, BLACK, 10, 130, 200, 100, 100, "Defense", "White")
-        Special_Button = Buttons(screen, BLACK, 10, 240, 200, 100, 100, "Special", "White")
-        Items_Button = Buttons(screen, BLACK, 10, 350, 200, 100, 100, "Items", "White")
+    if Stage1:  # Battle Menu
+        Attack_Button = Buttons(screen, BLACK, 10, 20, 200, 100, 100, "Attack", "White", 10, 20)
+        Defend_Button = Buttons(screen, BLACK, 10, 130, 200, 100, 100, "Defense", "White", 10, 130)
+        Special_Button = Buttons(screen, BLACK, 10, 240, 200, 100, 100, "Special", "White", 10, 240)
+        Items_Button = Buttons(screen, BLACK, 10, 350, 200, 100, 100, "Items", "White", 10, 350)
 
         if A > 4:
             A = 1
         if A < 1:
             A = 4
         if A == 1:
-            Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White")
+            Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White", 0,0)
             Attack_Untermenü = True
         else:
             Attack_Untermenü = False
         if A == 2:
-            Buttons(screen, RED, 5, 125, 210, 110, 2, " ", "White")
+            Buttons(screen, RED, 5, 125, 210, 110, 2, " ", "White", 0,0)
             Defende_Untermenü = True
         else:
             Defende_Untermenü = False
         if A == 3:
-            Buttons(screen, RED, 5, 235, 210, 110, 2, " ", "White")
+            Buttons(screen, RED, 5, 235, 210, 110, 2, " ", "White", 0,0)
             Special_Untermenü = True
         else:
             Special_Untermenü = False
         if A == 4:
-            Buttons(screen, RED, 5, 345, 210, 110, 2, " ", "White")
+            Buttons(screen, RED, 5, 345, 210, 110, 2, " ", "White", 0,0)
             Item_Untermenü = True
         else:
             Item_Untermenü = False
@@ -336,5 +334,6 @@ while True:
         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
         screen.blit(Item_text, (20, 20))
         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+
     print(Stats_Creation, Stat_Points)
     Frames.tick(60)

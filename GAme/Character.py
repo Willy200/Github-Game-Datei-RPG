@@ -3,7 +3,7 @@ class Character:
     def __init__(self):
         pass # lass es so einfach
 
-    def Stats(self, health, attack, defense, special, initiative, name):
+    def stats(self, health, attack, defense, special, initiative, name):
         self.health = health
         self.attack = attack
         self.defense = defense
