@@ -217,22 +217,25 @@ while True:
                 if A == y + 1 and B == l + 1:
                     Selection = Buttons(screen, RED, 200 + (50 * l), 100 + (50 * y), 30, 30, 2, "", "White", 0, 0)
 
-        for y in range(6):
             if Player_Input_SPACE == True and A == y+1 and B == 1:
                 Stats_Creation[A-1] += 1 # hier steigt es
                 Stat_Points -= 1
                 Player_Input_SPACE = False
 
             if Stats_Creation[A - 1] == 0: # für den fall eine Statistik wird kleiner 1
-                Stat_Points += 1
+                #Stat_Points += 1
                 Stats_Creation[A - 1] = 1
 
             if Stat_Points > 20:
                 Stat_Points = 20
 
-            if Player_Input_SPACE == True and A == y + 1 and B == 2:
+            if Player_Input_SPACE == True and A == y + 1 and B == 2 and Stats_Creation[A - 1] > 1:
                 Stats_Creation[A - 1] -= 1 # hier sinkt es
+                Stat_Points += 1
                 Player_Input_SPACE = False
+
+            #if Player_Input_SPACE == True and A == y + 1 and B == 2 and Stats_Creation[A - 1] == 1:
+             #   pass
 
             if Stats_Creation[A - 1] > 10: # für den fall eine Statistik wird größer 10
                 Stat_Points += 1
@@ -243,7 +246,7 @@ while True:
         for y in range(5):
             Buttons(screen, "Black", 305, 105 + (y * 50), 20, 20, 0, str(Stats_Creation[y]), "Blue", 312, 107 + (y * 50))
         Buttons(screen, "Black", 405, 105, 35, 20, 0, str(Stat_Points), "Blue", 412, 107)
-            #if Stats_Points == 0: hier wird character creation process abgeschlossen
+        #if Stats_Points == 0: hier wird character creation process abgeschlossen
 
 
     if Stage1 == True:  # Battle Menu
