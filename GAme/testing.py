@@ -78,7 +78,7 @@ Defense = 1
 Initiative = 1
 Special = 1
 Stat_Points = 20
-Stats_Creation = [1, Attack, Defense, Initiative, Special]
+Stats_Creation = [Health, Attack, Defense, Initiative, Special]
 Player_Creation = False
 Attack_Untermenü = False
 Defende_Untermenü = False
@@ -218,7 +218,6 @@ while True:
                     Selection = Buttons(screen, RED, 200 + (50 * l), 100 + (50 * y), 30, 30, 2, "", "White", 0, 0)
 
         for y in range(6):
-            #Buttons(screen, "Black", 305, 105 + (y * 50), 20, 20, 0, Stats_Creation[y], "White", 210, 105 + (x * 50)) gibt ein Error, weiß nicht warum
             if Player_Input_SPACE == True and A == y+1 and B == 1:
                 Stats_Creation[A-1] += 1 # hier steigt es
                 Stat_Points -= 1
@@ -241,7 +240,9 @@ while True:
 
             if Stat_Points < 0:
                 Stat_Points = 0
-
+        for y in range(5):
+            Buttons(screen, "Black", 305, 105 + (y * 50), 20, 20, 0, str(Stats_Creation[y]), "Blue", 312, 107 + (y * 50))
+        Buttons(screen, "Black", 405, 105, 35, 20, 0, str(Stat_Points), "Blue", 412, 107)
             #if Stats_Points == 0: hier wird character creation process abgeschlossen
 
 
