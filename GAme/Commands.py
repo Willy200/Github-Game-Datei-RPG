@@ -2,13 +2,12 @@
 
 
 def damage(character, enemy):
-    if enemy_defending == True:
-        Damage = character.attack - (enemy.defense * 1.2)
+    if enemy.isDefending == True:
+        Damage = character.Battle_Attack_Actual - (enemy.Battle_Defense_Actual * 1.2)
     else:
-        Damage = character.attack - (enemy.defense * 0.8)
-        
+        Damage = character.Battle_Attack_Actual - (enemy.Battle_Defense_Actual * 0.8)
 
-    return Damage
+    enemy.setHealth(-Damage)
 
 
 def heal(character, amount):

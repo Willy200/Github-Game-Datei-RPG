@@ -2,6 +2,7 @@ import pygame
 from Character import Character
 # from Commands import darstellreihenfolge
 from sys import exit
+from Commands import damage
 
 pygame.init()
 
@@ -259,10 +260,16 @@ while True:
             Battle = True
 
     if Battle:
+        # Das sind die Healthbars von Player
         pygame.draw.rect(screen, "Green", [400, 500, 200, 20], 2)
         pygame.draw.rect(screen, "Green", [400, 500, 200 * (Player.Battle_Health_Actual/Player.Battle_Health_Max), 20], 20)
+        pygame.draw.rect(screen, "Blue", [400, 520, 200, 20], 2)
+        pygame.draw.rect(screen, "Blue", [400, 520, 200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20], 20)
+        # Das sind die Healthbars von Enemy
         pygame.draw.rect(screen, "Red", [400, 20, 200, 20], 2)
         pygame.draw.rect(screen, "Red",[400, 20, 200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20], 20)
+        pygame.draw.rect(screen, "Violet", [400, 40, 200, 20], 2)
+        pygame.draw.rect(screen, "Violet", [400, 40, 200 * (Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max), 20], 20)
         if Stage1:  # Battle Menu
             Attack_Button = Buttons(screen, BLACK, 10, 20, 200, 100, 100, "Attack", "White", 10, 20)
             Defend_Button = Buttons(screen, BLACK, 10, 130, 200, 100, 100, "Defense", "White", 10, 130)
@@ -311,6 +318,9 @@ while True:
                     match B:
                         case 1:
                             pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+                            if Player_Input_SPACE:
+                                damage(Player, Enemy)
+                                Player_Input_SPACE = False
                         case 2:
                             pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
                 case 2:

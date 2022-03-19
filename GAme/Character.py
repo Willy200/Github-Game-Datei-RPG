@@ -1,7 +1,7 @@
 class Character:
     Player_Skill_Points = 20 #Anfangswert den man auszugeben hat
     def __init__(self):
-        pass # lass es so einfach
+        self.isDefending = False
 
     def stats(self, health, attack, defense, special, initiative, name):
         self.health = health
@@ -51,7 +51,13 @@ class Character:
         surface.fill("Red")
         screen.blit(surface,(400,200))
         text = font.render("Player1",False,"Black")
+    def Defend(self):
+        self.isDefending = True
 
+        return isDefending
+    def NoDefend(self):
+        self.isDefending = False
+        return self.isDefending
 
 class Item:
     def __init__(self):
