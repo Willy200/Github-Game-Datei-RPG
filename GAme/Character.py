@@ -12,14 +12,14 @@ class Character:
         self.name = name
 
     def Battle_Stats(self): # die Brauchen wir, weil während des Kampfs sich die Statistiken ändern werden z.B. Health und wir wollen nicht, dass es permament reduziert bleibt
-        self.Battle_Health_Max = self.health
-        self.Battle_Health_Actual = self.health
-        self.Battle_Attack_Max = self.attack
-        self.Battle_Attack_Actual = self.attack
-        self.Battle_Defense_Max = self.defense
-        self.Battle_Defense_Actual = self.defense
-        self.Battle_Special_Max = self.special
-        self.Battle_Special_Actual = self.special
+        self.Battle_Health_Max = self.health * 5
+        self.Battle_Health_Actual = self.health * 5
+        self.Battle_Attack_Max = self.attack * 2
+        self.Battle_Attack_Actual = self.attack * 2
+        self.Battle_Defense_Max = self.defense * 2
+        self.Battle_Defense_Actual = self.defense * 2
+        self.Battle_Special_Max = self.special * 4
+        self.Battle_Special_Actual = self.special * 4
         self.Battle_Initiative_Actual = self.init
         self.Battlle_Initiative_Max = self.init
     def setHealth(self, amount):

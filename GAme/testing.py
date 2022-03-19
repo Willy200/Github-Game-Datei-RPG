@@ -73,15 +73,17 @@ def SwitchTurns():
     global Stage1
     global Stage2
     global TurnOrder
+    global Player_Input_SPACE
     A = 1
     Stage1 = True
     Stage2 = False
     if TurnOrder == 1:
         Enemy.NoDefend()
         TurnOrder = 2
-    if TurnOrder == 2:
+    elif TurnOrder == 2:
         Player.NoDefend()
         TurnOrder = 1
+    Player_Input_SPACE = False
 
 screen = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("Spiel")
@@ -336,22 +338,41 @@ while True:
                                 pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
                                 if Player_Input_SPACE:
                                     damage(Player, Enemy)
-                                    TurnOrder = 2
+                                    SwitchTurns()
+                                    #TurnOrder = 2
                             case 2:
                                 pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
                     case 2:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Shield_text, (20, 20))
                         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+                        match B:
+                            case 1:
+                                pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+                                if Player_Input_SPACE:
+                                    Player.Defend()
+                                    SwitchTurns()
                     case 3:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Attck_Buff_text, (20, 20))
                         screen.blit(Defense_Buff_text, (20, 40))
+                        match B:
+                            case 1:
+                                pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+                                if Player_Input_SPACE:
+                                    Player.setAttack(1.2)
+                                    Buttons(screen, "Green", 400, 490, 20, 20, 3, "AttBuff", "Black", 400, 490)
+                                    SwitchTurns()
+                            case 2:
+                                pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
+                                if Player_Input_SPACE:
+                                    Player.setDefense(1.2)
+                                    SwitchTurns()
                     case 4:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Item_text, (20, 20))
                         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-                #Player_Input_SPACE = False
+                Player_Input_SPACE = False
 
             if Player_Input_ALT:
                 Stage1 = True
@@ -374,7 +395,10 @@ while True:
                     print("Enemy Used an Item")
                     SwitchTurns()
 
-    #print(Player_Input_SPACE)
-    if TurnOrder == 2:
-        print("TERAZ")
+            print(Enemy_Move)
+        if Player.Battle_Health_Actual <= 0:
+            Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU DIED", "Red", 200, 200)
+        if Enemy.Battle_Health_Actual <= 0:
+            Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU WON", "Yellow", 200, 200)
+            
     Frames.tick(60)
