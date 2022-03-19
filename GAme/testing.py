@@ -72,7 +72,7 @@ BLUE = (0, 0, 255)
 
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
-Stat_Points = 20
+Stat_Points = 2
 Stats_Creation = [1, 1, 1, 1, 1]
 Player_Creation = False
 Attack_Untermenü = False
@@ -88,13 +88,14 @@ Stage1 = False
 Stage2 = False
 Main_Menu = True
 Textanzeige = True
+Battle_Menus = [1, 2, 3, 4]
 Background = pygame.Surface((1000, 600))
-# surface = pygame.Surface((100,200))##########################################################
-surface2 = pygame.Surface((100, 200))
+# surface = pygame.Surface((100,200))
+#surface2 = pygame.Surface((100, 200))
 surface3 = pygame.Surface((200, 50))
 surface3.fill("Red")
 # surface2.fill("Blue")
-# surface.fill("Red")############################################################################
+# surface.fill("Red")
 Background.fill("White")
 sky = pygame.image.load("Graphics/Sky.png")
 ground = pygame.image.load("Graphics/ground.png")
@@ -159,7 +160,7 @@ while True:
     # screen.blit(sky,(0,0))
     # screen.blit(ground,(0,350))
     # screen.blit(surface,(400,200))#############################################
-    screen.blit(surface2, (700, 200))
+    #screen.blit(surface2, (700, 200))
     ####screen.blit(text,(400,180))
     # screen.blit(text2, (700, 180))
     # screen.blit(surface3,(0,300))
@@ -253,32 +254,25 @@ while True:
         Special_Button = Buttons(screen, BLACK, 10, 240, 200, 100, 100, "Special", "White", 10, 240)
         Items_Button = Buttons(screen, BLACK, 10, 350, 200, 100, 100, "Items", "White", 10, 350)
 
-        if A > 4:
-            A = 1
-        if A < 1:
-            A = 4
-        if A == 1:
-            Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White", 0,0)
-            Attack_Untermenü = True
+        if not Player_Input_SPACE:
+            match A:
+                case 1:
+                    Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White", 0,0)
+
+                case 2:
+                    Buttons(screen, RED, 5, 125, 210, 110, 2, " ", "White", 0,0)
+
+                case 3:
+                    Buttons(screen, RED, 5, 235, 210, 110, 2, " ", "White", 0,0)
+
+                case 4:
+                    Buttons(screen, RED, 5, 345, 210, 110, 2, " ", "White", 0,0)
         else:
-            Attack_Untermenü = False
-        if A == 2:
-            Buttons(screen, RED, 5, 125, 210, 110, 2, " ", "White", 0,0)
-            Defende_Untermenü = True
-        else:
-            Defende_Untermenü = False
-        if A == 3:
-            Buttons(screen, RED, 5, 235, 210, 110, 2, " ", "White", 0,0)
-            Special_Untermenü = True
-        else:
-            Special_Untermenü = False
-        if A == 4:
-            Buttons(screen, RED, 5, 345, 210, 110, 2, " ", "White", 0,0)
-            Item_Untermenü = True
-        else:
-            Item_Untermenü = False
+            Stage2 = True
+            Stage1 = False
 
         Player_Input_ALT = False  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+        Player_Input_SPACE = False
 
     # if Player_Input_SPACE == True :
     # if A == 1 or A == 2:
@@ -289,51 +283,33 @@ while True:
     # if Player_Input_ALT == True:
     #    Stage1 = True
     #   Stage2 = False
-    #  A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+       # A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
     # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
     ########################################### Untermenüs ###############################################################
 
-    if Stage2 == True and Attack_Untermenü == True:
-        pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
-        screen.blit(Sword_text, (20, 20))
-        screen.blit(Bow_text, (20, 40))
+    if Stage2:
+        match A:
+            case 1:
+                pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
+                screen.blit(Sword_text, (20, 20))
+                screen.blit(Bow_text, (20, 40))
+            case 2:
+                pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
+                screen.blit(Shield_text, (20, 20))
+                pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+            case 3:
+                pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
+                screen.blit(Attck_Buff_text, (20, 20))
+                screen.blit(Defense_Buff_text, (20, 40))
+            case 4:
+                pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
+                screen.blit(Item_text, (20, 20))
+                pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
+        
+    if Player_Input_ALT:
+        Stage1 = True
+        Stage2 = False
 
-        if B >= 2:  # Damit B auch nur zwischen 1 und 2 bleibt
-            B = 2
-        if B <= 1:
-            B = 1
-
-        if B == 1:  # zeichnen von roten Kasten um Bow und Sword in Attack_Untermenü
-            pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-
-        if B == 2:
-            pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
-
-    if Stage2 == True and Defende_Untermenü == True:
-        pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
-        screen.blit(Shield_text, (20, 20))
-        pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-
-    if Stage2 == True and Special_Untermenü == True:
-
-        pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
-        screen.blit(Attck_Buff_text, (20, 20))
-        screen.blit(Defense_Buff_text, (20, 40))
-        if B >= 2:  # Damit B auch nur zwischen 1 und 2 bleibt
-            B = 2
-        if B <= 1:
-            B = 1
-
-        if B == 1:  # zeichnen von roten Kasten um Bow und Sword in Attack_Untermenü
-            pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-
-        if B == 2:
-            pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
-
-    if Stage2 == True and Item_Untermenü == True:
-        pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
-        screen.blit(Item_text, (20, 20))
-        pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-
-    print(Stats_Creation, Stat_Points)
+    print(Player_Input_SPACE)
+    print(A)
     Frames.tick(60)
