@@ -54,7 +54,7 @@ class Character:
     def Defend(self):
         self.isDefending = True
 
-        return isDefending
+        return self.isDefending
     def NoDefend(self):
         self.isDefending = False
         return self.isDefending
