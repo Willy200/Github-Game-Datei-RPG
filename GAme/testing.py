@@ -41,7 +41,7 @@ def UP_DOWN():
         elif event.key == pygame.K_DOWN and Key_pressed == True:
             A = 0
 
-    elif event.type == pygame.KEYDOWN and Player_Creation == True:
+    elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_DOWN and Key_pressed == True:
             A += 1
             if A == 6:
@@ -68,6 +68,7 @@ def UP_DOWN():
         if B == 3:
             B = 2
 
+
 def SwitchTurns():
     global A
     global Stage1
@@ -84,6 +85,7 @@ def SwitchTurns():
         Player.NoDefend()
         TurnOrder = 1
     Player_Input_SPACE = False
+
 
 screen = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("Spiel")
@@ -102,6 +104,7 @@ B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt un
 TurnOrder = 1
 Stat_Points = 2
 Stats_Creation = [1, 1, 1, 1, 1]
+Rest_Phase = False
 Player_Creation = False
 Attack_Untermenü = False
 Defende_Untermenü = False
@@ -271,40 +274,61 @@ while True:
                          "Dominik")
             Player.Battle_Stats()
             A = 1
+            B = 1
             Enemy = Character()
             Enemy.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4],
-                         "Willy")
+                        "Willy")
             Enemy.Battle_Stats()
-            Battle = True
-
-
+            # Battle = True
+            Rest_Phase = True
+    if Rest_Phase:
+        Start_Battle_Button = Buttons(screen, BLACK, 90, 100, 150, 80, 50, "Start The Fight", "White", 98, 125)
+        Shop_Button = Buttons(screen, BLACK, 90, 300, 150, 80, 50, "Buy Items", "White", 120, 325)
+        Check_Enemies_Button = Buttons(screen, BLACK, 700, 100, 100, 50, 50, "Enemies", "Grey", 705, 125)
+        Forfeit_Button = Buttons(screen, BLACK, 700, 250, 100, 50, 50, "FORFEIT", "Grey", 705, 255)
+        match A:
+            case 1:
+                match B:
+                    case 1:
+                        pygame.draw.rect(screen, "Red", [90, 100, 150, 80], 2)
+                    case 2:
+                        pygame.draw.rect(screen, "Red", [700, 100, 150, 80], 2)
+            case 2:
+                match B:
+                    case 1:
+                        pygame.draw.rect(screen, "Red", [90, 300, 150, 80], 2)
+                    case 2:
+                        pygame.draw.rect(screen, "Red", [750, 250, 150, 80], 2)
 
     if Battle:
         # Das sind die Healthbars von Player
         pygame.draw.rect(screen, "Green", [400, 500, 200, 20], 2)
-        Player_Healthbar = Buttons(screen, "Green",400, 500, 200 * (Player.Battle_Health_Actual/Player.Battle_Health_Max), 20, 20,
-                                   str((Player.Battle_Health_Actual/Player.Battle_Health_Max) * 100)[0:3] + "%", BLACK, 555, 501)
+        Player_Healthbar = Buttons(screen, "Green", 400, 500,
+                                   200 * (Player.Battle_Health_Actual / Player.Battle_Health_Max), 20, 20,
+                                   str((Player.Battle_Health_Actual / Player.Battle_Health_Max) * 100)[0:3] + "%",
+                                   BLACK, 555, 501)
         pygame.draw.rect(screen, "Blue", [400, 520, 200, 20], 2)
-        pygame.draw.rect(screen, "Blue", [400, 520, 200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20], 20)
+        pygame.draw.rect(screen, "Blue",
+                         [400, 520, 200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20], 20)
 
-        Player_Specialbar = Buttons(screen, "Blue",400, 520,
-                                   200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20, 20,
-                                   str((Player.Battle_Special_Actual / Player.Battle_Special_Max) * 100)[0:3] + "%",
-                                   BLACK, 555, 521)
+        Player_Specialbar = Buttons(screen, "Blue", 400, 520,
+                                    200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20, 20,
+                                    str((Player.Battle_Special_Actual / Player.Battle_Special_Max) * 100)[0:3] + "%",
+                                    BLACK, 555, 521)
 
         # Das sind die Healthbars von Enemy
         pygame.draw.rect(screen, "Red", [400, 20, 200, 20], 2)
-        pygame.draw.rect(screen, "Red",[400, 20, 200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20], 20)
+        pygame.draw.rect(screen, "Red", [400, 20, 200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20], 20)
         Enemy_Healthbar = Buttons(screen, "Red", 400, 20,
-                                   200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20, 20,
-                                   str((Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max) * 100)[0:3] + "%",
-                                   BLACK, 555, 21)
+                                  200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20, 20,
+                                  str((Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max) * 100)[0:3] + "%",
+                                  BLACK, 555, 21)
 
         pygame.draw.rect(screen, "Blue", [400, 520, 200, 20], 2)
         pygame.draw.rect(screen, "Violet", [400, 40, 200, 20], 2)
         Enemy_Specialbar = Buttons(screen, "Violet", 400, 40,
                                    200 * (Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max), 20, 20,
-                                  str((Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max) * 100)[0:3] + "%",
+                                   str((Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max) * 100)[0:3] + "%",
                                    BLACK, 555, 41)
 
         if TurnOrder == 1:
@@ -332,18 +356,18 @@ while True:
                     Stage1 = False
                     Player_Input_SPACE = False
 
-        # if Player_Input_SPACE == True :
-        # if A == 1 or A == 2:
-        #    Stage1 = False
-        #   Stage2 = True
-        # else:                                        # vieleicht später noch wichtig
-        # Player_Input_SPACE = False
-        # if Player_Input_ALT == True:
-        #    Stage1 = True
-        #   Stage2 = False
-        # A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-        # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-        ########################################### Untermenüs ###############################################################
+            # if Player_Input_SPACE == True :
+            # if A == 1 or A == 2:
+            #    Stage1 = False
+            #   Stage2 = True
+            # else:                                        # vieleicht später noch wichtig
+            # Player_Input_SPACE = False
+            # if Player_Input_ALT == True:
+            #    Stage1 = True
+            #   Stage2 = False
+            # A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+            # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
+            ########################################### Untermenüs ###############################################################
 
             if Stage2:
                 match A:
@@ -464,4 +488,5 @@ while True:
         if Enemy.Battle_Health_Actual <= 0:
             Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU WON", "Yellow", 200, 200)
 
+    print(A, B)
     Frames.tick(60)
