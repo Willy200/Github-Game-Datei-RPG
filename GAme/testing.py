@@ -100,7 +100,7 @@ Battle = False
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
 TurnOrder = 1
-Stat_Points = 20
+Stat_Points = 2
 Stats_Creation = [1, 1, 1, 1, 1]
 Player_Creation = False
 Attack_Untermenü = False
@@ -277,17 +277,35 @@ while True:
             Enemy.Battle_Stats()
             Battle = True
 
+
+
     if Battle:
         # Das sind die Healthbars von Player
         pygame.draw.rect(screen, "Green", [400, 500, 200, 20], 2)
-        pygame.draw.rect(screen, "Green", [400, 500, 200 * (Player.Battle_Health_Actual/Player.Battle_Health_Max), 20], 20)
+        Player_Healthbar = Buttons(screen, "Green",400, 500, 200 * (Player.Battle_Health_Actual/Player.Battle_Health_Max), 20, 20,
+                                   str((Player.Battle_Health_Actual/Player.Battle_Health_Max) * 100)[0:3] + "%", BLACK, 555, 501)
         pygame.draw.rect(screen, "Blue", [400, 520, 200, 20], 2)
         pygame.draw.rect(screen, "Blue", [400, 520, 200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20], 20)
+
+        Player_Specialbar = Buttons(screen, "Blue",400, 520,
+                                   200 * (Player.Battle_Special_Actual / Player.Battle_Special_Max), 20, 20,
+                                   str((Player.Battle_Special_Actual / Player.Battle_Special_Max) * 100)[0:3] + "%",
+                                   BLACK, 555, 521)
+
         # Das sind die Healthbars von Enemy
         pygame.draw.rect(screen, "Red", [400, 20, 200, 20], 2)
         pygame.draw.rect(screen, "Red",[400, 20, 200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20], 20)
+        Enemy_Healthbar = Buttons(screen, "Red", 400, 20,
+                                   200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20, 20,
+                                   str((Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max) * 100)[0:3] + "%",
+                                   BLACK, 555, 21)
+
+        pygame.draw.rect(screen, "Blue", [400, 520, 200, 20], 2)
         pygame.draw.rect(screen, "Violet", [400, 40, 200, 20], 2)
-        pygame.draw.rect(screen, "Violet", [400, 40, 200 * (Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max), 20], 20)
+        Enemy_Specialbar = Buttons(screen, "Violet", 400, 40,
+                                   200 * (Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max), 20, 20,
+                                  str((Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max) * 100)[0:3] + "%",
+                                   BLACK, 555, 41)
 
         if TurnOrder == 1:
             if Stage1:  # Battle Menu
@@ -339,7 +357,6 @@ while True:
                                 if Player_Input_SPACE:
                                     damage(Player, Enemy)
                                     SwitchTurns()
-                                    #TurnOrder = 2
                             case 2:
                                 pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
                     case 2:
@@ -360,14 +377,25 @@ while True:
                             case 1:
                                 pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
                                 if Player_Input_SPACE:
-                                    Player.setAttack(1.2)
-                                    Buttons(screen, "Green", 400, 490, 20, 20, 3, "AttBuff", "Black", 400, 490)
-                                    SwitchTurns()
+                                    Player.setSpecial(-1)
+                                    if Player.Battle_Special_Actual < 0:
+                                        print("You don't have enough mana!")
+                                        Player.setSpecial(1)
+                                    else:
+                                        Player.setAttack(1.2)
+                                        Buttons(screen, "Green", 400, 490, 20, 20, 3, "AttBuff", "Black", 400, 490)
+                                        SwitchTurns()
                             case 2:
                                 pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
                                 if Player_Input_SPACE:
-                                    Player.setDefense(1.2)
-                                    SwitchTurns()
+                                    Player.setSpecial(-1)
+                                    if Player.Battle_Special_Actual < 0:
+                                        print("You don't have enough mana!")
+                                        Player.setSpecial(1)
+                                    else:
+                                        Player.setDefense(1.2)
+                                        Buttons(screen, "Blue", 400, 490, 20, 20, 3, "DefBuff", "Black", 400, 490)
+                                        SwitchTurns()
                     case 4:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Item_text, (20, 20))
@@ -380,6 +408,7 @@ while True:
 
         if TurnOrder == 2:
             Enemy_Move = randint(1, 4)
+            Enemy_Special_Move = randint(1, 2)
             match Enemy_Move:
                 case 1:
                     damage(Enemy, Player)
@@ -388,9 +417,43 @@ while True:
                     Enemy.Defend()
                     SwitchTurns()
                 case 3:
-                    damage(Enemy, Player)
-                    damage(Enemy, Player)
-                    SwitchTurns()
+                    match Enemy_Special_Move:
+                        case 1:
+                            Enemy.setSpecial(-1)
+                            if Enemy.Battle_Special_Actual > 0:
+                                Enemy.setSpecial(1)
+                                Enemy_Move = randint(1, 3)
+                                match Enemy_Move:
+                                    case 1:
+                                        damage(Enemy, Player)
+                                        SwitchTurns()
+                                    case 2:
+                                        Enemy.Defend()
+                                        SwitchTurns()
+                                    case 3:
+                                        print("Enemy Used an Item")
+                                        SwitchTurns()
+                            else:
+                                Enemy.setAttack(1.2)
+                                SwitchTurns()
+                        case 2:
+                            Enemy.setSpecial(-1)
+                            if Enemy.Battle_Special_Actual > 0:
+                                Enemy.setSpecial(1)
+                                Enemy_Move = randint(1, 3)
+                                match Enemy_Move:
+                                    case 1:
+                                        damage(Enemy, Player)
+                                        SwitchTurns()
+                                    case 2:
+                                        Enemy.Defend()
+                                        SwitchTurns()
+                                    case 3:
+                                        print("Enemy Used an Item")
+                                        SwitchTurns()
+                            else:
+                                Enemy.setDefense(1.2)
+                                SwitchTurns()
                 case 4:
                     print("Enemy Used an Item")
                     SwitchTurns()
@@ -400,5 +463,5 @@ while True:
             Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU DIED", "Red", 200, 200)
         if Enemy.Battle_Health_Actual <= 0:
             Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU WON", "Yellow", 200, 200)
-            
+
     Frames.tick(60)
