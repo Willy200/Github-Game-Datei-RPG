@@ -1,6 +1,5 @@
 import pygame
 from Character import Character
-# from Commands import darstellreihenfolge
 from sys import exit
 from Commands import damage
 from random import *
@@ -38,7 +37,6 @@ def UP_DOWN():
             Player_Input_DOWN = False
             if A == 5:
                 A = 1
-
     elif event.type == pygame.KEYDOWN and Main_Menu == True:
         if Player_Input_UP:
             A = 1
@@ -46,14 +44,12 @@ def UP_DOWN():
         elif Player_Input_DOWN:
             A = 0
             Player_Input_DOWN = False
-
-    elif event.type == pygame.KEYDOWN:
+    elif event.type == pygame.KEYDOWN and Player_Creation == True:
         if Player_Input_DOWN:
             A += 1
             Player_Input_DOWN = False
             if A == 6:
                 A = 1
-
         if Player_Input_UP:
             A -= 1
             Player_Input_UP = False
@@ -79,6 +75,27 @@ def UP_DOWN():
         Player_Input_DOWN = False
         if B == 3:
             B = 2
+    elif Rest_Phase == True:
+        if Player_Input_DOWN:
+            A -= 1
+            Player_Input_DOWN = False
+            if A == 0:
+                A = 2
+        if Player_Input_UP:
+            A += 1
+            Player_Input_UP = False
+            if A == 3:
+                A = 1
+        if Player_Input_LEFT:
+            B -= 1
+            Player_Input_LEFT = False
+            if B == 0:
+                B = 1
+        if Player_Input_RIGHT:
+            B += 1
+            Player_Input_RIGHT = False
+            if B == 3:
+                B = 2
 
 
 def SwitchTurns():
@@ -113,6 +130,7 @@ BLUE = (0, 0, 255)
 Battle = False
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
+Shop = False
 TurnOrder = 1
 Stat_Points = 2
 Stats_Creation = [1, 1, 1, 1, 1]
@@ -209,7 +227,6 @@ while True:
             Player_Creation = True
             A = 1
             Player_Input_SPACE = False
-
         if A == 0:
             Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White", 395, 295)
         if A == 0 and Player_Input_SPACE == True:
@@ -260,8 +277,6 @@ while True:
         Buttons(screen, "Black", 405, 105, 35, 20, 0, str(Stat_Points), "Blue", 412, 107)
 
         if Stat_Points == 0:
-            Stage1 = True
-            Player_Creation = False
             Player = Character()
             Player.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4],
                          "Dominik")
@@ -272,26 +287,41 @@ while True:
             Enemy.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4],
                         "Willy")
             Enemy.Battle_Stats()
-            # Battle = True
+            #Battle = True
+            Player_Creation = False
             Rest_Phase = True
+
     if Rest_Phase:
-        Start_Battle_Button = Buttons(screen, BLACK, 90, 100, 150, 80, 50, "Start The Fight", "White", 98, 125)
-        Shop_Button = Buttons(screen, BLACK, 90, 300, 150, 80, 50, "Buy Items", "White", 120, 325)
-        Check_Enemies_Button = Buttons(screen, BLACK, 700, 100, 100, 50, 50, "Enemies", "Grey", 705, 125)
-        Forfeit_Button = Buttons(screen, BLACK, 700, 250, 100, 50, 50, "FORFEIT", "Grey", 705, 255)
+        Start_Battle_Button = Buttons(screen, BLACK, 90, 100, 150, 80, 40, "Start The Fight", "White", 98, 125)
+        Shop_Button = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Items", "White", 120, 330)
+        Check_Enemies_Button = Buttons(screen, BLACK, 700, 100, 150, 80, 40, "Enemies", "Grey", 740, 130)
+        Forfeit_Button = Buttons(screen, BLACK, 700, 300, 150, 80, 40, "FORFEIT", "Grey", 740, 330)
         match A:
             case 1:
                 match B:
                     case 1:
                         pygame.draw.rect(screen, "Red", [90, 100, 150, 80], 2)
+                        if Player_Input_SPACE:
+                            Player_Input_SPACE, Rest_Phase = False, False
+                            Battle, Stage1 = True, True
                     case 2:
                         pygame.draw.rect(screen, "Red", [700, 100, 150, 80], 2)
+
             case 2:
                 match B:
                     case 1:
                         pygame.draw.rect(screen, "Red", [90, 300, 150, 80], 2)
+                        if Player_Input_SPACE:
+                            Player_Input_SPACE = False
+                            Rest_Phase = False
+                            Shop = True
                     case 2:
-                        pygame.draw.rect(screen, "Red", [750, 250, 150, 80], 2)
+                        pygame.draw.rect(screen, "Red", [700, 300, 150, 80], 2)
+
+    if Shop:
+        Buy_Health_Potion = Buttons(screen, BLACK, 90, 100, 150, 80, 40, "Buy Health Potion", "White", 98, 125)
+        Buy_Special_Potion = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Special Potion", "White", 120, 330)
+        Buy_Item = Buttons(screen, BLACK, 700, 100, 150, 300, 75, "Buy Item", "White", 737, 250)
 
     if Battle:
         # Das sind die Healthbars von Player
@@ -349,17 +379,6 @@ while True:
                     Stage1 = False
                     Player_Input_SPACE = False
 
-            # if Player_Input_SPACE == True :
-            # if A == 1 or A == 2:
-            #    Stage1 = False
-            #   Stage2 = True
-            # else:                                        # vieleicht später noch wichtig
-            # Player_Input_SPACE = False
-            # if Player_Input_ALT == True:
-            #    Stage1 = True
-            #   Stage2 = False
-            # A = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
-            # B = 1  # Wichig! Damit A und B zurückgesetzt werden, wenn man die Stage wechselt.
             ########################################### Untermenüs ###############################################################
 
             if Stage2:
@@ -417,11 +436,10 @@ while True:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Item_text, (20, 20))
                         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
-                Player_Input_SPACE = False
-
             if Player_Input_ALT:
                 Stage1 = True
                 Stage2 = False
+                Player_Input_ALT = False
 
         if TurnOrder == 2:
             Enemy_Move = randint(1, 4)
@@ -481,5 +499,5 @@ while True:
         if Enemy.Battle_Health_Actual <= 0:
             Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU WON", "Yellow", 200, 200)
 
-    print(A, B)
+    print(A, B, Stage1, Stage2)
     Frames.tick(60)
