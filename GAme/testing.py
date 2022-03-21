@@ -22,49 +22,61 @@ def UP_DOWN():
     global Main_Menu
     global Player_Creation
     global B
+    global Player_Input_DOWN
+    global Player_Input_UP
+    global Player_Input_LEFT
+    global Player_Input_RIGHT
 
     if event.type == pygame.KEYDOWN and Stage1 == True:
-        if event.key == pygame.K_UP and Key_pressed == True:
+        if Player_Input_UP:
             A -= 1
+            Player_Input_UP = False
             if A == 0:
                 A = 4
-
-        elif event.key == pygame.K_DOWN and Key_pressed == True:
+        elif Player_Input_DOWN:
             A += 1
+            Player_Input_DOWN = False
             if A == 5:
                 A = 1
 
     elif event.type == pygame.KEYDOWN and Main_Menu == True:
-        if event.key == pygame.K_UP and Key_pressed == True:
+        if Player_Input_UP:
             A = 1
-
-        elif event.key == pygame.K_DOWN and Key_pressed == True:
+            Player_Input_UP = False
+        elif Player_Input_DOWN:
             A = 0
+            Player_Input_DOWN = False
 
     elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_DOWN and Key_pressed == True:
+        if Player_Input_DOWN:
             A += 1
+            Player_Input_DOWN = False
             if A == 6:
                 A = 1
 
-        if event.key == pygame.K_UP and Key_pressed == True:
+        if Player_Input_UP:
             A -= 1
+            Player_Input_UP = False
             if A == 0:
-                A = 1
-        if event.key == pygame.K_LEFT and Key_pressed == True:
+                A = 5
+        if Player_Input_LEFT:
             B -= 1
+            Player_Input_LEFT = False
             if B == 0:
                 B = 1
-        if event.key == pygame.K_RIGHT and Key_pressed == True:
+        if Player_Input_RIGHT:
             B += 1
+            Player_Input_RIGHT = False
             if B == 3:
                 B = 2
-    elif Stage2 == True and event.key == pygame.K_UP and Key_pressed == True:
+    elif Stage2 == True and Player_Input_UP:
         B -= 1
+        Player_Input_UP = False
         if B == 0:
             B = 1
-    elif Stage2 == True and event.key == pygame.K_DOWN and Key_pressed == True:
+    elif Stage2 == True and Player_Input_DOWN == True:
         B += 1
+        Player_Input_DOWN = False
         if B == 3:
             B = 2
 
@@ -112,9 +124,10 @@ Special_Untermenü = False
 Item_Untermenü = False
 Player_Input_DOWN = False
 Player_Input_UP = False
-Key_pressed = False
 Player_Input_SPACE = False
 Player_Input_ALT = False
+Player_Input_RIGHT = False
+Player_Input_LEFT = False
 Stage1 = False
 Stage2 = False
 Main_Menu = True
@@ -155,41 +168,22 @@ while True:
             exit()
 
         elif event.type == pygame.KEYDOWN:  # Das alles hier guck ob eine Taste gedrückt wurde. Wenn sie gedrückt wird ist die entsprechende Input Variable auf TRUE gesetzt, sonst nicht. Alle anderen sind False.
-            Key_pressed = True
-            UP_DOWN()
-
-            if event.key == pygame.K_RIGHT and Key_pressed == True:
-                Payer_Input_RIGHT = True
-            else:
-                Payer_Input_RIGHT = False
-
-            if event.key == pygame.K_LEFT and Key_pressed == True:
-                Player_Input_LEFT = True
-            else:
-                Payer_Input_LEFT = False
-            if event.key == pygame.K_SPACE and Key_pressed == True:
-                Player_Input_SPACE = True
-                Player_Input_ALT = False
-            else:
-                Payer_Input_SPACE = False
-
-            if event.key == pygame.K_m and Key_pressed == True:
-                Player_Input_ALT = True
-                Player_Input_SPACE = False
-            else:
-                Payer_Input_SPACE = False
-    Key_pressed = False
+            match event.key:
+                case pygame.K_RIGHT:
+                    Player_Input_RIGHT = True
+                case pygame.K_LEFT:
+                    Player_Input_LEFT = True
+                case pygame.K_UP:
+                    Player_Input_UP = True
+                case pygame.K_DOWN:
+                    Player_Input_DOWN = True
+                case pygame.K_SPACE:
+                    Player_Input_SPACE = True
+                case pygame.K_m:
+                    Player_Input_ALT = True
+        UP_DOWN()
     pygame.display.update()
     screen.blit(Background, (0, 0))
-    # screen.blit(sky,(0,0))
-    # screen.blit(ground,(0,350))
-    # screen.blit(surface,(400,200))#############################################
-    # screen.blit(surface2, (700, 200))
-    ####screen.blit(text,(400,180))
-    # screen.blit(text2, (700, 180))
-    # screen.blit(surface3,(0,300))
-    # screen.blit(Background,(0,0))
-    # Zustand  A (Attack gedrückt)
 
     ################### ERSTE MENÜ UND INPUT PHASE ##################################################################
 
@@ -243,7 +237,6 @@ while True:
                 Player_Input_SPACE = False
 
             if Stats_Creation[A - 1] == 0:  # für den fall eine Statistik wird kleiner 1
-                # Stat_Points += 1
                 Stats_Creation[A - 1] = 1
 
             if Stat_Points > 20:
