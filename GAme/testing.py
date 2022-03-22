@@ -9,7 +9,8 @@ pygame.init()
 
 class Buttons:
     def __init__(self, screen, color, XPos, YPos, XLen, YLen, Willyszahl, Text, TextColor, XPos_Text,
-                 YPos_Text):  # Man kann die vorbestimmte Farben wie RED = (255, 0, 0) sowohl bei rect als auch bei Text benutzen
+                 YPos_Text):# Man kann die vorbestimmte Farben wie RED = (255, 0, 0) sowohl bei rect als
+        # auch bei Text benutzen
         pygame.draw.rect(screen, color, [XPos, YPos, XLen, YLen], Willyszahl)
         Buttons_Text = font.render(Text, False, TextColor)
         screen.blit(Buttons_Text, (XPos_Text, YPos_Text))
@@ -121,23 +122,25 @@ pygame.display.set_caption("Spiel")
 Frames = pygame.time.Clock()
 font = pygame.font.Font("Fonts/Pixeltype.ttf", 30)
 
-################################### Variablen definiert, damit Global ########################################################################
+################################### Variablen definiert, damit Global ###############################################
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
-Round_Counter = 0
-Player_Buff = False
-Battle = False
+Round_Counter = 1
+
 A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
 B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
 Shop = False
+Enemy_view = False
 TurnOrder = 1
 Stat_Points = 2
 Stats_Creation = [1, 1, 1, 1, 1]
 temp_round_att = 0
 temp_round_def = 0
 Rest_Phase = False
+Player_Buff = False
+Battle = False
 Player_Creation = False
 Attack_Untermenü = False
 Defende_Untermenü = False
@@ -153,12 +156,17 @@ Stage1 = False
 Stage2 = False
 Main_Menu = True
 Textanzeige = True
+
+############################################################# Texturen########################################
 Background = pygame.Surface((1000, 600))
 surface3 = pygame.Surface((200, 50))
 surface3.fill("Red")
 Background.fill("White")
 sky = pygame.image.load("Graphics/Sky.png")
 ground = pygame.image.load("Graphics/ground.png")
+Enemy_picture = pygame.image.load("Graphics/Gegner Skelet.png")
+Player_picture = pygame.image.load("Graphics/character_1.png")
+################################################################ Schrift ############################################
 Attack_text = font.render("ATTACK", False, RED)
 Attack_Add = font.render("+", False, "White")
 Attack_Sub = font.render("-", False, "White")
@@ -171,7 +179,8 @@ Shield_text = font.render("Shield", False, "White")
 Attck_Buff_text = font.render("Attack Buff", False, "White")
 Defense_Buff_text = font.render("Defense Buff", False, "White")
 Potion_Text = font.render("Potion", False, "White")
-################################################################### Text darstellen ##################################################
+Round_Counter_description = font.render("Round Number:", False, "Black")
+################################################################### Text darstellen ###################################
 i = 0
 T1 = font.render("Welcome to the new Turnamento", False, "Black")
 T2 = font.render("These formidble Worriors will be your Opponent", False, "Black")
@@ -179,7 +188,7 @@ T3 = font.render("Can you beat them all ? Will you be the new Champion? ", False
 T4 = font.render(" ", False, "Black")
 Text = [T1, T2, T3, T4]
 # screen.blit(Text[i], (20, 40))
-##################################################################### main Game loop ###################################################################################
+##################################################################### main Game loop ##################################
 while True:
 
     for event in pygame.event.get():
@@ -188,7 +197,8 @@ while True:
             pygame.quit()
             exit()
 
-        elif event.type == pygame.KEYDOWN:  # Das alles hier guck ob eine Taste gedrückt wurde. Wenn sie gedrückt wird ist die entsprechende Input Variable auf TRUE gesetzt, sonst nicht. Alle anderen sind False.
+        elif event.type == pygame.KEYDOWN:  # Das alles hier guck ob eine Taste gedrückt wurde. Wenn sie
+            # gedrückt wird ist die entsprechende Input Variable auf TRUE gesetzt, sonst nicht. Alle anderen sind False.
             match event.key:
                 case pygame.K_RIGHT:
                     Player_Input_RIGHT = True
@@ -297,7 +307,9 @@ while True:
                             Battle, Stage1 = True, True
                     case 2:
                         pygame.draw.rect(screen, "Red", [700, 100, 150, 80], 2)
-
+                        if Player_Input_SPACE:
+                            Player_Input_SPACE, Rest_Phase = False, False
+                            Enemy_view = True
             case 2:
                 match B:
                     case 1:
@@ -313,8 +325,20 @@ while True:
         Buy_Health_Potion = Buttons(screen, BLACK, 90, 100, 150, 80, 40, "Buy Health Potion", "White", 98, 125)
         Buy_Special_Potion = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Special Potion", "White", 120, 330)
         Buy_Item = Buttons(screen, BLACK, 700, 100, 150, 300, 75, "Buy Item", "White", 737, 250)
+        if Player_Input_ALT :
+                Shop = False
+                Rest_Phase = True
+                Player_Input_ALT = False
+    if Enemy_view:
+        if Player_Input_ALT :
+                Enemy_view = False
+                Rest_Phase = True
+                Player_Input_ALT = False
 
     if Battle:
+        Round_Counter_Text = font.render(str(Round_Counter), False, "Black")
+        screen.blit(Round_Counter_description,(800,70))
+        screen.blit(Round_Counter_Text, (850, 100))
         # Das sind die Healthbars von Player
         pygame.draw.rect(screen, "Green", [400, 500, 200, 20], 2)
         Player_Healthbar = Buttons(screen, "Green", 400, 500,
@@ -332,7 +356,7 @@ while True:
 
         # Das sind die Healthbars von Enemy
         pygame.draw.rect(screen, "Red", [400, 20, 200, 20], 2)
-        pygame.draw.rect(screen, "Red", [400, 20, 200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20], 20)
+        pygame.draw.rect(screen, "Red", [400, 20, 200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20],20)
         Enemy_Healthbar = Buttons(screen, "Red", 400, 20,
                                   200 * (Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max), 20, 20,
                                   str((Enemy.Battle_Health_Actual / Enemy.Battle_Health_Max) * 100)[0:3] + "%",
@@ -344,7 +368,8 @@ while True:
                                    200 * (Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max), 20, 20,
                                    str((Enemy.Battle_Special_Actual / Enemy.Battle_Special_Max) * 100)[0:3] + "%",
                                    BLACK, 555, 41)
-
+        screen.blit(Player_picture,(500,350))
+        screen.blit(Enemy_picture, (500, 150))
         if TurnOrder == 1:
             if Stage1:  # Battle Menu
                 Attack_Button = Buttons(screen, BLACK, 10, 20, 200, 100, 100, "Attack", "White", 10, 20)
@@ -375,7 +400,7 @@ while True:
                     Stage1 = False
                     Player_Input_SPACE = False
 
-            ########################################### Untermenüs ###############################################################
+            ########################################### Untermenüs ###################################################
 
             if Stage2:
                 match A:
@@ -391,6 +416,9 @@ while True:
                                     SwitchTurns()
                             case 2:
                                 pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
+                                if Player_Input_SPACE:
+                                    damage(Player, Enemy)
+                                    SwitchTurns()
                     case 2:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Shield_text, (20, 20))
@@ -466,3 +494,6 @@ while True:
     #print(A, B, Stage1, Stage2)
         print(Player.Battle_Attack_Actual, Player.Battle_Defense_Actual)
     Frames.tick(60)
+    #print (Player_Input_ALT)
+    #print (Player_Input_SPACE)
+    print(Shop)
