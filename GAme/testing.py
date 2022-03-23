@@ -3,6 +3,7 @@ from Character import Character
 from sys import exit
 from Commands import damage
 from random import *
+from Items import Magic_Wand
 
 pygame.init()
 
@@ -180,6 +181,7 @@ Attck_Buff_text = font.render("Attack Buff", False, "White")
 Defense_Buff_text = font.render("Defense Buff", False, "White")
 Potion_Text = font.render("Potion", False, "White")
 Round_Counter_description = font.render("Round Number:", False, "Black")
+Magic_Wand_Description = font.render(str(Magic_Wand.ItemDescritpion), False, "White")
 ################################################################### Text darstellen ###################################
 i = 0
 T1 = font.render("Welcome to the new Turnamento", False, "Black")
@@ -293,6 +295,11 @@ while True:
             Rest_Phase = True
 
     if Rest_Phase:
+        #The coins
+        pygame.draw.circle(screen, "Yellow", (20, 20), 10)
+        Coins_Text = font.render("= " + str(Player.coins), False, "Black")
+        screen.blit(Coins_Text, (40, 11))
+
         Start_Battle_Button = Buttons(screen, BLACK, 90, 100, 150, 80, 40, "Start The Fight", "White", 98, 125)
         Shop_Button = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Items", "White", 120, 330)
         Check_Enemies_Button = Buttons(screen, BLACK, 700, 100, 150, 80, 40, "Enemies", "Grey", 740, 130)
@@ -324,11 +331,22 @@ while True:
     if Shop:
         Buy_Health_Potion = Buttons(screen, BLACK, 90, 100, 150, 80, 40, "Buy Health Potion", "White", 98, 125)
         Buy_Special_Potion = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Special Potion", "White", 120, 330)
-        Buy_Item = Buttons(screen, BLACK, 700, 100, 150, 300, 75, "Buy Item", "White", 737, 250)
+        Buy_Item = Buttons(screen, BLACK, 700, 100, 150, 300, 75, Magic_Wand.name, "White", 730, 130)
+        screen.blit(Magic_Wand_Description, (730, 140)) # es wird in einer Zeile gezeigt, keine Anhung was ich damit machen soll
+
+
+        # The Coins
+        pygame.draw.circle(screen, "Yellow", (20, 20), 10)
+        Coins_Text = font.render("= " + str(Player.coins), False, "Black")
+        screen.blit(Coins_Text, (40, 11))
+
+
         if Player_Input_ALT :
                 Shop = False
                 Rest_Phase = True
                 Player_Input_ALT = False
+
+
     if Enemy_view:
         if Player_Input_ALT :
                 Enemy_view = False
@@ -474,16 +492,18 @@ while True:
                 damage(Enemy, Player)
                 SwitchTurns()
                 Round_Counter += 1
-            if Enemy_move >= 70 and Enemy_move < 90:
+            if 70 <= Enemy_move < 90:
                 Enemy.Defend()
                 SwitchTurns()
                 Round_Counter += 1
-            if Enemy_move >= 90 and Enemy_move < 95:
+            if 90 <= Enemy_move < 95:
                 print("Enemy used Item")
                 Round_Counter += 1
-            if Enemy_move >= 95 and Enemy_move <= 100:
+                SwitchTurns()
+            if Enemy_move >= 95:
                 print("Enemy is sad and won't attack")
                 Round_Counter += 1
+                SwitchTurns()
 
             print(Enemy_move, Round_Counter)
         if Player.Battle_Health_Actual <= 0:
