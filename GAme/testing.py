@@ -4,6 +4,7 @@ from sys import exit
 from Commands import damage
 from random import *
 from Items import Magic_Wand
+from Enemies import Enemy_Wizard, Enemy_Rogue, Enemy_Warrior
 
 pygame.init()
 
@@ -135,8 +136,9 @@ B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt un
 Shop = False
 Enemy_view = False
 TurnOrder = 1
-Stat_Points = 2
+Stat_Points = 20
 Stats_Creation = [1, 1, 1, 1, 1]
+Enemy_List = [Enemy_Rogue, Enemy_Wizard, Enemy_Warrior]
 temp_round_att = 0
 temp_round_def = 0
 Rest_Phase = False
@@ -286,10 +288,9 @@ while True:
             Player.Battle_Stats()
             A = 1
             B = 1
-            Enemy = Character()
-            Enemy.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4],
-                        "Willy")
-            Enemy.Battle_Stats()
+
+            #Enemy.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4],
+            #            "Willy")
             #Battle = True
             Player_Creation = False
             Rest_Phase = True
@@ -354,6 +355,8 @@ while True:
                 Player_Input_ALT = False
 
     if Battle:
+        Enemy = Enemy_List[randint(0, 2)]
+        Enemy.Battle_Stats()
         Round_Counter_Text = font.render(str(Round_Counter), False, "Black")
         screen.blit(Round_Counter_description,(800,70))
         screen.blit(Round_Counter_Text, (850, 100))
@@ -508,11 +511,16 @@ while True:
             print(Enemy_move, Round_Counter)
         if Player.Battle_Health_Actual <= 0:
             Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU DIED", "Red", 200, 200)
+            Battle = False
+            Main_Menu = True
         if Enemy.Battle_Health_Actual <= 0:
             Buttons(screen, "Black", 100, 80, 400, 400, 200, "YOU WON", "Yellow", 200, 200)
+            Battle = False
+            Rest_Phase = True
 
     #print(A, B, Stage1, Stage2)
         print(Player.Battle_Attack_Actual, Player.Battle_Defense_Actual)
+        print(Enemy.name)
     Frames.tick(60)
     #print (Player_Input_ALT)
     #print (Player_Input_SPACE)
