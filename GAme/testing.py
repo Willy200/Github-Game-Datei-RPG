@@ -145,10 +145,6 @@ Rest_Phase = False
 Player_Buff = False
 Battle = False
 Player_Creation = False
-Attack_Untermenü = False
-Defende_Untermenü = False
-Special_Untermenü = False
-Item_Untermenü = False
 Player_Input_DOWN = False
 Player_Input_UP = False
 Player_Input_SPACE = False
@@ -158,7 +154,6 @@ Player_Input_LEFT = False
 Stage1 = False
 Stage2 = False
 Main_Menu = True
-Textanzeige = True
 
 ############################################################# Texturen########################################
 Background = pygame.Surface((1000, 600))
@@ -288,10 +283,6 @@ while True:
             Player.Battle_Stats()
             A = 1
             B = 1
-
-            #Enemy.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[3], Stats_Creation[4],
-            #            "Willy")
-            #Battle = True
             Player_Creation = False
             Rest_Phase = True
 

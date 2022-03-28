@@ -100,14 +100,3 @@ class Item:
         character.Battle_Defense_Max = character.defense
         character.Battle_Special_Max = character.special
         character.Battle_Health_Max = character.health
-
-# class Player(Character): < hier unsicher ob wir es brauchen an zwei Unterklassen zu teilen
-# class Enemy(Character):
-# Boy = Character()
-# Boy.Stats(15, 5,5,10,"ku")
-# Boy.setHealth(int(input()))
-# print(Boy.health)
-
-# Magic_Wand = Item()
-# Magic_Wand.ItemDescritpion("Magic Wand", "It is a magic wand, it increases the special damage")
-# Magic_Wand.ItemAttributes(1, 1, 1.2, 1)
