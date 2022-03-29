@@ -110,6 +110,38 @@ def UP_DOWN():
                 B = 2
 
 
+def UP_DOWN_2():  # nicht beruhren, hab eine Idee
+    global A
+    global B
+    global List_of_Buttons_X
+    global List_of_Buttons_Y
+    global Player_Input_DOWN
+    global Player_Input_UP
+    global Player_Input_LEFT
+    global Player_Input_RIGHT
+
+    if Player_Input_UP:
+        A -= 1
+        Player_Input_UP = False
+        if A == -1:
+            A = len(List_of_Buttons_Y) - 1
+    if Player_Input_DOWN:
+        A += 1
+        Player_Input_DOWN = False
+        if A == len(List_of_Buttons_Y):
+            A = 0
+    if Player_Input_RIGHT:
+        B += 1
+        Player_Input_RIGHT = False
+        if B >= len(List_of_Buttons_X):
+            B = 0
+    if Player_Input_LEFT:
+        B -= 1
+        Player_Input_LEFT = False
+        if B <= -1:
+            B = len(List_of_Buttons_X) - 1
+
+
 def SwitchTurns():
     global A
     global Stage1
@@ -140,12 +172,12 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 Round_Counter = 1
 
-A = 1  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
-B = 1  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
+A = 0  # Gibt die Stufe in Stage1 an die gerade ausgewählt und Angezeigt wird
+B = 0  # Gibt die Stufe in Stage2 Attack_Untermenü an die gerade ausgewählt und Angezeigt wird
 Shop = False
 Enemy_view = False
 TurnOrder = 1
-Stat_Points = 20
+Stat_Points = 2
 Stats_Creation = [1, 1, 1, 1, 1]
 Enemy_List = [Enemy_Rogue, Enemy_Wizard, Enemy_Warrior]
 temp_round_att = 0
@@ -163,7 +195,8 @@ Player_Input_LEFT = False
 Stage1 = False
 Stage2 = False
 Main_Menu = True
-
+List_of_Buttons_X = []
+List_of_Buttons_Y = []
 ############################################################# Texturen########################################
 Background = pygame.Surface((1000, 600))
 surface3 = pygame.Surface((200, 50))
@@ -187,7 +220,7 @@ Attck_Buff_text = font.render("Attack Buff", False, "White")
 Defense_Buff_text = font.render("Defense Buff", False, "White")
 Potion_Text = font.render("Potion", False, "White")
 Round_Counter_description = font.render("Round Number:", False, "Black")
-Magic_Wand_Description = font.render(str(Magic_Wand.ItemDescritpion), False, "White")
+Magic_Wand_Description = font.render(str(Magic_Wand.ItemDescription), False, "White")
 ################################################################### Text darstellen ###################################
 i = 0
 T1 = font.render("Welcome to the new Turnamento", False, "Black")
@@ -220,7 +253,7 @@ while True:
                     Player_Input_SPACE = True
                 case pygame.K_m:
                     Player_Input_ALT = True
-        UP_DOWN()
+        UP_DOWN_2()
     pygame.display.update()
     screen.blit(Background, (0, 0))
 
@@ -229,16 +262,18 @@ while True:
     if Main_Menu:
         Start_Button = Buttons(screen, BLACK, 400, 200, 150, 75, 100, "Start", "White", 450, 220)
         Exit_Button = Buttons(screen, BLACK, 400, 300, 150, 75, 100, "Quit", "White", 450, 320)
-        if A == 1:
+        List_of_Buttons_X = [Start_Button]
+        List_of_Buttons_Y = [Start_Button, Exit_Button]
+        if A == 0:
             Buttons(screen, RED, 395, 195, 160, 85, 2, " ", "White", 395, 195)
-        if A == 1 and Player_Input_SPACE == True:
+        if A == 0 and Player_Input_SPACE == True:
             Main_Menu = False
             Player_Creation = True
-            A = 1
+            A = 0
             Player_Input_SPACE = False
-        if A == 0:
+        if A == 1:
             Buttons(screen, RED, 395, 295, 160, 85, 2, " ", "White", 395, 295)
-        if A == 0 and Player_Input_SPACE == True:
+        if A == 1 and Player_Input_SPACE == True:
             pygame.quit()
 
     if Player_Creation:
@@ -247,6 +282,8 @@ while True:
         Def_Crea = Buttons(screen, BLACK, 90, 200, 100, 50, 50, "Defense", "White", 95, 205)
         Init_Crea = Buttons(screen, BLACK, 90, 250, 100, 50, 50, "Initiative", "White", 95, 255)
         Spe_Crea = Buttons(screen, BLACK, 90, 300, 100, 50, 50, "Special", "White", 95, 305)
+        List_of_Buttons_Y = [Hea_Crea, Att_Crea, Def_Crea, Init_Crea, Spe_Crea]
+        List_of_Buttons_X = [Hea_Crea, Att_Crea]
 
         for x in range(5):
             Buttons(screen, "Green", 205, 105 + (x * 50), 20, 20, 0, "+", "White", 210, 105 + (x * 50))
@@ -254,28 +291,28 @@ while True:
 
         for y in range(6):
             for l in range(2):
-                if A == y + 1 and B == l + 1:
+                if A == y and B == l:
                     Selection = Buttons(screen, RED, 200 + (50 * l), 100 + (50 * y), 30, 30, 2, "", "White", 0, 0)
 
-            if Player_Input_SPACE == True and A == y + 1 and B == 1:
-                Stats_Creation[A - 1] += 1  # hier steigt es
+            if Player_Input_SPACE == True and A == y and B == 0:
+                Stats_Creation[A] += 1  # hier steigt es
                 Stat_Points -= 1
                 Player_Input_SPACE = False
 
-            if Stats_Creation[A - 1] == 0:  # für den fall eine Statistik wird kleiner 1
-                Stats_Creation[A - 1] = 1
+            if Stats_Creation[A] == 0:  # für den fall eine Statistik wird kleiner 1
+                Stats_Creation[A] = 1
 
             if Stat_Points > 20:
                 Stat_Points = 20
 
-            if Player_Input_SPACE == True and A == y + 1 and B == 2 and Stats_Creation[A - 1] > 1:
-                Stats_Creation[A - 1] -= 1  # hier sinkt es
+            if Player_Input_SPACE == True and A == y and B == 1 and Stats_Creation[A] > 1:
+                Stats_Creation[A] -= 1  # hier sinkt es
                 Stat_Points += 1
                 Player_Input_SPACE = False
 
-            if Stats_Creation[A - 1] > 10:  # für den fall eine Statistik wird größer 10
+            if Stats_Creation[A] > 10:  # für den fall eine Statistik wird größer 10
                 Stat_Points += 1
-                Stats_Creation[A - 1] = 10
+                Stats_Creation[A] = 10
 
             if Stat_Points < 0:
                 Stat_Points = 0
@@ -290,8 +327,8 @@ while True:
             Player.stats(Stats_Creation[0], Stats_Creation[1], Stats_Creation[2], Stats_Creation[4], Stats_Creation[3],
                          "Dominik")
             Player.Battle_Stats()
-            A = 1
-            B = 1
+            A = 0
+            B = 0
             Player_Creation = False
             Rest_Phase = True
 
@@ -305,37 +342,43 @@ while True:
         Shop_Button = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Items", "White", 120, 330)
         Check_Enemies_Button = Buttons(screen, BLACK, 700, 100, 150, 80, 40, "Enemies", "Grey", 740, 130)
         Forfeit_Button = Buttons(screen, BLACK, 700, 300, 150, 80, 40, "FORFEIT", "Grey", 740, 330)
+
+        List_of_Buttons_X = [Start_Battle_Button, Check_Enemies_Button]
+        List_of_Buttons_Y = [Start_Battle_Button, Shop_Button]
         match A:
-            case 1:
+            case 0:
                 match B:
-                    case 1:
+                    case 0:
                         pygame.draw.rect(screen, "Red", [90, 100, 150, 80], 2)
                         if Player_Input_SPACE:
                             Player_Input_SPACE, Rest_Phase = False, False
                             Battle, Stage1 = True, True
                             Enemy = Enemy_List[randint(0, 2)]
                             Enemy.Battle_Stats()
-                    case 2:
+                    case 1:
                         pygame.draw.rect(screen, "Red", [700, 100, 150, 80], 2)
                         if Player_Input_SPACE:
                             Player_Input_SPACE, Rest_Phase = False, False
                             Enemy_view = True
-            case 2:
+            case 1:
                 match B:
-                    case 1:
+                    case 0:
                         pygame.draw.rect(screen, "Red", [90, 300, 150, 80], 2)
                         if Player_Input_SPACE:
                             Player_Input_SPACE = False
                             Rest_Phase = False
                             Shop = True
-                    case 2:
+                    case 1:
                         pygame.draw.rect(screen, "Red", [700, 300, 150, 80], 2)
 
     if Shop:
-        Buy_Health_Potion = Buttons(screen, BLACK, 90, 100, 150, 80, 40, "Buy Health Potion", "White", 98, 125)
-        Buy_Special_Potion = Buttons(screen, BLACK, 90, 300, 150, 80, 40, "Buy Special Potion", "White", 120, 330)
-        Buy_Item = Buttons(screen, BLACK, 700, 100, 150, 300, 75, Magic_Wand.name, "White", 730, 130)
-        screen.blit(Magic_Wand_Description, (730, 140))
+        Buy_Health_Potion = Buttons(screen, BLACK, 90, 100, 170, 80, 0, "Buy Health Potion", "White", 98, 125)
+        Buy_Special_Potion = Buttons(screen, BLACK, 730, 100, 170, 80, 0, "Buy Special Potion", "White", 738, 125)
+        Buy_Item = Buttons(screen, BLACK, 110, 400, 650, 150, 0, Magic_Wand.name, "White", 155, 405)
+        screen.blit(Magic_Wand_Description, (115, 430))
+
+        List_of_Buttons_X = [Buy_Health_Potion, Buy_Special_Potion]
+        List_of_Buttons_Y = [Buy_Item]
 
         # The Coins
         pygame.draw.circle(screen, "Yellow", (20, 20), 10)
@@ -377,6 +420,8 @@ while True:
                 Defend_Button = Buttons(screen, BLACK, 10, 130, 200, 100, 100, "Defense", "White", 10, 130)
                 Special_Button = Buttons(screen, BLACK, 10, 240, 200, 100, 100, "Special", "White", 10, 240)
                 Items_Button = Buttons(screen, BLACK, 10, 350, 200, 100, 100, "Items", "White", 10, 350)
+                List_of_Buttons_X = [Attack_Button]
+                List_of_Buttons_Y = [Attack_Button, Defend_Button, Special_Button, Items_Button]
 
                 if Round_Counter == temp_round_att + 3:
                     Player.Battle_Attack_Actual = Player.Battle_Attack_Max
@@ -505,4 +550,4 @@ while True:
     Frames.tick(60)
     # print (Player_Input_ALT)
 
-    print(Shop)
+    print(Shop, len(List_of_Buttons_Y), len(List_of_Buttons_X), B, A)
