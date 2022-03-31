@@ -148,7 +148,7 @@ def SwitchTurns():
     global Stage2
     global TurnOrder
     global Player_Input_SPACE
-    A = 1
+    A = 0
     Stage1 = True
     Stage2 = False
     if TurnOrder == 1:
@@ -430,16 +430,16 @@ while True:
 
                 if not Player_Input_SPACE:
                     match A:
-                        case 1:
+                        case 0:
                             Buttons(screen, RED, 5, 15, 210, 110, 2, " ", "White", 0, 0)
 
-                        case 2:
+                        case 1:
                             Buttons(screen, RED, 5, 125, 210, 110, 2, " ", "White", 0, 0)
 
-                        case 3:
+                        case 2:
                             Buttons(screen, RED, 5, 235, 210, 110, 2, " ", "White", 0, 0)
 
-                        case 4:
+                        case 3:
                             Buttons(screen, RED, 5, 345, 210, 110, 2, " ", "White", 0, 0)
                 if Player_Input_SPACE:
                     Stage2 = True
@@ -450,37 +450,37 @@ while True:
 
             if Stage2:
                 match A:
-                    case 1:
+                    case 0:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Sword_text, (20, 20))
                         screen.blit(Bow_text, (20, 40))
                         match B:
-                            case 1:
+                            case 0:
                                 pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
                                 if Player_Input_SPACE:
                                     damage(Player, Enemy)
                                     SwitchTurns()
-                            case 2:
+                            case 0:
                                 pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
                                 if Player_Input_SPACE:
                                     damage(Player, Enemy)
                                     SwitchTurns()
-                    case 2:
+                    case 1:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Shield_text, (20, 20))
                         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
                         match B:
-                            case 1:
+                            case 0:
                                 pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
                                 if Player_Input_SPACE:
                                     Player.Defend()
                                     SwitchTurns()
-                    case 3:
+                    case 2:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Attck_Buff_text, (20, 20))
                         screen.blit(Defense_Buff_text, (20, 40))
                         match B:
-                            case 1:
+                            case 0:
                                 pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
                                 if Player_Input_SPACE:
                                     Player.setSpecial(-1)
@@ -492,7 +492,7 @@ while True:
                                         temp_round_att = Round_Counter
                                         Buttons(screen, "Green", 400, 490, 20, 20, 3, "AttBuff", "Black", 400, 490)
                                         SwitchTurns()
-                            case 2:
+                            case 1:
                                 pygame.draw.rect(screen, RED, [10, 40, 200, 20], 2)
                                 if Player_Input_SPACE:
                                     Player.setSpecial(-1)
@@ -504,7 +504,7 @@ while True:
                                         temp_round_def = Round_Counter
                                         Buttons(screen, "Blue", 400, 490, 20, 20, 3, "DefBuff", "Black", 400, 490)
                                         SwitchTurns()
-                    case 4:
+                    case 3:
                         pygame.draw.rect(screen, BLACK, [10, 20, 200, 300], 100)
                         screen.blit(Item_text, (20, 20))
                         pygame.draw.rect(screen, RED, [10, 20, 200, 20], 2)
